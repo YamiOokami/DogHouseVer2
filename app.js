@@ -5,7 +5,7 @@ const _ = require("lodash");
 
 const app = express();
 
-const nonActivePage = "";
+let activePage = ["","",""];
 
 app.set('view engine', 'ejs');
 
@@ -16,26 +16,23 @@ app.use(bodyParser.urlencoded({
 app.use(express.static("public"));
 
 app.get("/", function(req, res) {
+  activePage = ["active","",""];
   res.render("main", {
-    aboutactive: nonActivePage,
-    contactactive: nonActivePage,
-    mainactive: "active"
+    activePage : activePage
   });
 });
 
 app.get("/contact", function(req, res) {
+  activePage = ["","active",""];
   res.render("contact", {
-    aboutactive: nonActivePage,
-    contactactive: "active",
-    mainactive: nonActivePage
+    activePage : activePage
   });
 });
 
 app.get("/about", function(req, res) {
+  activePage = ["","","active"];
   res.render("about", {
-    aboutactive: "active",
-    contactactive: nonActivePage,
-    mainactive: nonActivePage
+    activePage : activePage
   });
 });
 

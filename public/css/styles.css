@@ -1,4 +1,12 @@
 /* main elements */
+
+
+html,
+body {
+ height: 100%;
+ position: relative;
+}
+
 body {
   font-family: 'Varela Round', sans-serif;
   text-align: center;
@@ -8,9 +16,18 @@ h1 {
   font-weight: 600;
 }
 
+
 /* containers */
 .container-fluid {
   padding: 3% 15% 7%;
+}
+
+.main-container {
+ min-height: 100vh; /* will cover the 100% of viewport */
+ overflow: hidden;
+ display: block;
+ position: relative;
+ padding-bottom: 100px; /* height of your footer */
 }
 
 /* border for embedded elements */
@@ -99,6 +116,7 @@ h1 {
 
 /* Shows */
 
+
 #shows {
   margin-bottom: -6%;
 }
@@ -133,7 +151,7 @@ h1 {
   height: auto;
   position: relative;
   right: 60%;
-  top: 5px;
+  bottom: 30px;
 }
 
 .shows-dogbow {
@@ -151,6 +169,9 @@ h1 {
   color: #fff;
   font-family: 'M PLUS Rounded 1c', sans-serif;
   padding: 1% 15%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .social-icon {
@@ -187,7 +208,7 @@ h1 {
     height: auto;
     position: relative;
     right: 50%;
-    top: -30px;
+    bottom: 50px;
   }
 
   .shows-dogbow {
@@ -223,7 +244,7 @@ h1 {
     height: auto;
     position: relative;
     right: 50%;
-    top: -30px;
+    bottom: 50px;
   }
 
   .shows-dogbow {
