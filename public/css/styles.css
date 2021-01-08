@@ -188,6 +188,20 @@ h1 {
     /* display: none; */
 }
 
+
+.contact-title {
+  margin-bottom: 10px;
+}
+
+.dog-stick {
+  width: 73%;
+}
+
+.sad-dog {
+  width:40%;
+  padding-top: 40px;
+}
+
 /* max-width: 575px */
 
 @media (max-width: 601px) {

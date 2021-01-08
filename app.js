@@ -2,8 +2,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const _ = require("lodash");
+const nodemailer = require('nodemailer');
 
 const app = express();
+
+let transport = nodemailer.createTransport({
+		service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    auth: {
+       user: 'doghouseband7@gmail.com',
+       pass: 'Allwoodhomo7'
+    }
+});
 
 let activePage = ["","",""];
 
@@ -34,6 +45,44 @@ app.get("/about", function(req, res) {
   res.render("about", {
     activePage : activePage
   });
+});
+
+app.get("/success", function(req, res) {
+  activePage = ["","",""];
+  res.render("success", {
+    activePage : activePage
+  });
+});
+
+app.get("/failed", function(req, res) {
+  activePage = ["","",""];
+  res.render("failed", {
+    activePage : activePage
+  });
+});
+
+app.post("/contact", function(req, res){
+const userName = req.body.userName;;
+const userEmail = req.body.userEmail;
+const userMessage = req.body.userMessage;
+
+const finalMessage = {
+  from: userEmail,
+  to: "doghouseband7@gmail.com",
+  subject: "הודעה שהתקבלה דרך האתר מ" + userName,
+  text: userMessage + " מייל לחזרה: " + userEmail
+};
+
+transport.sendMail(finalMessage, function(err, info){
+  if (err) {
+    console.log(err);
+    res.redirect("/failed");
+  } else {
+    console.log("sucess");
+    res.redirect("/success");
+  };
+});
+
 });
 
 app.listen(3000, function() {
