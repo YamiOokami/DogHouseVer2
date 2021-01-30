@@ -30,7 +30,7 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/doghouseDB",{
+mongoose.connect("mongodb://localhost:27017/doghouseDB", {
 	useNewUrlParser: true,
 	useUnifiedTopology: true
 });
@@ -40,6 +40,8 @@ const userSchema = new mongoose.Schema({
 	username: String,
 	password: String
 });
+
+const User = new mongoose.model("User", userSchema);
 
 app.get("/", function(req, res) {
   activePage = ["active","","",""];
@@ -62,6 +64,30 @@ app.get("/about", function(req, res) {
   });
 });
 
+// app.get("/register", function(req, res) {
+//   activePage = ["","","active",""];
+//   res.render("register", {
+//     activePage : activePage
+//   });
+// });
+//
+// app.post("/register", function(req, res){
+// 	bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+// 		const newUser = new User({
+// 			username : req.body.username,
+// 			password: hash
+// 		});
+// 	newUser.save(function(err){
+// 		if (err) {
+// 			console.log(err);
+// 			res.redirect("/failed");
+// 		} else {
+// 			res.redirect("/success");
+// 		}
+// 	});
+// });
+// });
+
 app.get("/success", function(req, res) {
   activePage = ["","",""];
   res.render("success", {
@@ -83,7 +109,7 @@ const userMessage = req.body.userMessage;
 
 const finalMessage = {
   from: userEmail,
-  to: "doghouseband7@gmail.com",
+  to: process.env.GMAIL_USER,
   subject: "הודעה שהתקבלה דרך האתר מ" + userName,
   text: userMessage + " מייל לחזרה: " + userEmail
 };
@@ -98,6 +124,29 @@ transport.sendMail(finalMessage, function(err, info){
   };
 });
 
+});
+
+app.post("/login", function(req, res) {
+  const username = req.body.username;
+  const password = (req.body.password);
+
+  User.findOne({
+    username: username
+  }, function(err, foundUser) {
+    if (err) {
+      console.log(err);
+    } else {
+      if (foundUser) {
+        bcrypt.compare(password, foundUser.password, function(err, result) {
+          if (result === true) {
+            res.render("edit");
+          } else {
+            console.log(err);
+          }
+        });
+      }
+    }
+  });
 });
 
 app.listen(3000, function() {
