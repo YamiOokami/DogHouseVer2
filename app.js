@@ -1,8 +1,12 @@
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const _ = require("lodash");
 const nodemailer = require('nodemailer');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 const app = express();
 
@@ -11,8 +15,8 @@ let transport = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
     auth: {
-       user: 'doghouseband7@gmail.com',
-       pass: 'Allwoodhomo7'
+       user: process.env.GMAIL_USER,
+       pass: process.env.GMAIL_PASS
     }
 });
 
@@ -26,22 +30,33 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
+mongoose.connect("mongodb://localhost:27017/doghouseDB",{
+	useNewUrlParser: true,
+	useUnifiedTopology: true
+});
+
+
+const userSchema = new mongoose.Schema({
+	username: String,
+	password: String
+});
+
 app.get("/", function(req, res) {
-  activePage = ["active","",""];
+  activePage = ["active","","",""];
   res.render("main", {
     activePage : activePage
   });
 });
 
 app.get("/contact", function(req, res) {
-  activePage = ["","active",""];
+  activePage = ["","active","",""];
   res.render("contact", {
     activePage : activePage
   });
 });
 
 app.get("/about", function(req, res) {
-  activePage = ["","","active"];
+  activePage = ["","","active",""];
   res.render("about", {
     activePage : activePage
   });

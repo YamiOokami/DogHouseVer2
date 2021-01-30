@@ -47,6 +47,15 @@ h1 {
   font-weight: 600;
 }
 
+.dropdown-menu {
+  text-align: center;
+  border: solid 1px;
+}
+
+.dropdownitem {
+  margin: 0 3% 4% 3%;
+}
+
 /* Title section */
 
 #title {

@@ -33,6 +33,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
           <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">התחברות לאתר</a>
+              <div class="dropdown-menu">
+                <form action="/login" method="post">
+                  <div class="mb3 dropdownitem">
+                    <label for="userId" class="form-label">שם משתמש</label>
+                    <input type="text" name="userId" class="form-control" required>
+                  </div>
+                  <div class="mb3 dropdownitem">
+                    <label for="password" class="form-label">סיסמה</label>
+                    <input type="password" name="password" class="form-control" required>
+                  </div>
+                  <div class="mb3 dropdownitem">
+                    <button type="submit" class="btn btn-success" name="button">התחבר</button>
+                  </div>
+                </form>
+              </div>
+            </li>
             <li class="navbar-item <%= activePage[2] %> ">
               <a class="nav-link" href="/about">קצת עלינו</a>
             </li>
