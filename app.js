@@ -66,18 +66,51 @@ userSchema.plugin(passportLocalMongoose);
 const Content = new mongoose.model("Content", contentSchema);
 const User = new mongoose.model("User", userSchema);
 
-const mdhe = new Content({
-  name: "mdhe",
-  title: "אנחנו דוגהאוס!",
-  paragraph:
-    "אנחנו להקת רוק שאוהבת לעשות שטויות כמו לכתוב טקסט שממלא חלקים באתר!",
-});
+// check if there is no data in the db and create the default content if there is none
 
-Content.find({ name: "mdhe" }, function (err, foundContent) {
-  if (foundContent === 0) {
-    mdhe.save();
+Content.find({ }, function (err, foundContent) {
+  if (foundContent.length === 0) {
+    Content.insertMany([
+{ name: "mdhe", title: "אנחנו דוגהאוס!", paragraph: "אנחנו להקת רוק שאוהבת לעשות שטויות כמו לכתוב טקסט שממלא חלקים באתר!"},
+{ name: "tndhe", title: "רוצים להיות תמיד מעודכנים? הרשמו לניוזלטר שלנו"},
+{ name: "omdhe", title: "המוזיקה שלנו"},
+{ name: "tsdhe", title: "הופעות קרובות"},
+{ name: "ps1dhe", paragraph: "הופעה בלבונטין בתאריך ככה ובשעה ככה"},
+{ name: "ps2dhe", paragraph: "הופעה במאדים בתאריך שכזה ושעה שכזו"},
+{ name: "ps3dhe", paragraph: "הופעה שהיא הופעה שכזו וכאלה"},
+{ name: "ps4dhe", paragraph: "הופעה משותפת עם החתולים הסמוראיים"},
+{ name: "ps5dhe", paragraph: "סיבוב הופעות מסביב לעולם ב 80 יום"},
+{ name: "tsudhe", title: "בקשתך התקבלה בהצלחה"},
+{ name: "tsfdhe", title: "בקשתך נכשלה", paragraph: "לצערינו בקשתך לא צלחה, אנא נסה שנית מאוחר יותר"},
+{ name: "audhe", title: "אז מי אנחנו בכלל?", paragraph:""},
+{ name: "mhel", title: "", paragraph: "",},
+{ name: "tnhel", title: ""},
+{ name: "omhel", title: ""},
+{ name: "tshel", title : ""},
+{ name: "ps1hel", paragraph: ""},
+{ name: "ps2hel", paragraph: ""},
+{ name: "ps3hel", paragraph: ""},
+{ name: "ps4hel", paragraph: ""},
+{ name: "ps5hel", paragraph: ""},
+{ name: "tsuhel", title: ""},
+{ name: "tsfhel", title: "", paragraph: ""},
+{ name: "auhel", title: "", paragraph:""},
+{ name: "mhe", title: "", paragraph: ""},
+{ name: "tnhe", title: ""},
+{ name: "omhe", title: ""},
+{ name: "tshe", title : ""},
+{ name: "ps1he", paragraph: ""},
+{ name: "ps2he", paragraph: ""},
+{ name: "ps3he", paragraph: ""},
+{ name: "ps4he", paragraph: ""},
+{ name: "ps5he", paragraph: ""},
+{ name: "tsuhe", title: ""},
+{ name: "tsfhe", title: "", paragraph: ""},
+{ name: "auhe", title: "", paragraph:""}
+    ]);
+    console.log("Found no data in the DB and created the default data");
   } else {
-    console.log("no need to create default content");
+    console.log("No need to create default content, you are good to go :)");
   }
 });
 
@@ -88,8 +121,29 @@ passport.deserializeUser(User.deserializeUser());
 
 app.get("/", function (req, res) {
   activePage = ["active", "", "", ""];
-  res.render("main", {
-    activePage: activePage,
+  Content.find({ }, function (err, foundContent) {
+    if (foundContent.length === 0) {
+      console.log(err);
+    } else {
+      res.render('main', {
+        activePage: activePage,
+        // section names
+        //main title and paragraph
+        mthe: foundContent[0].title,
+        mphe: foundContent[0].paragraph,
+        //newsletter
+        tnhe: foundContent[1].title,
+        //our music
+        omthe: foundContent[2].title,
+        //shows
+        tsdhe: foundContent[3].title,
+        ps1he: foundContent[4].paragraph,
+        ps2he: foundContent[5].paragraph,
+        ps3he: foundContent[6].paragraph,
+        ps4he: foundContent[7].paragraph,
+        ps5he: foundContent[8].paragraph
+      });
+    }
   });
 });
 
@@ -102,8 +156,15 @@ app.get("/contact", function (req, res) {
 
 app.get("/about", function (req, res) {
   activePage = ["", "", "active", ""];
-  res.render("about", {
-    activePage: activePage,
+  Content.findOne({name:"audhe"}, function(err, foundContent){
+    if (foundContent === 0) {
+      console.log(err);
+    } else {
+      res.render("about", {
+        activePage: activePage,
+        auhe: foundContent.title
+      });  
+    }
   });
 });
 
@@ -129,7 +190,7 @@ app.post("/register", function(req, res){
   });
 }); */
 
-app.get("/success", function (req, res) {
+app.get('/success', function (req, res) {
   activePage = ["", "", ""];
 
   // finding the specific content I'm looking for and showing it in the page
@@ -138,7 +199,7 @@ app.get("/success", function (req, res) {
     if (foundContent === 0) {
       console.log(err);
     } else {
-      res.render("success", {
+      res.render('success', {
         activePage: activePage,
         tsuhe: foundContent,
       });
@@ -146,10 +207,18 @@ app.get("/success", function (req, res) {
   });
 });
 
-app.get("/failed", function (req, res) {
+app.get('/failed', function (req, res) {
   activePage = ["", "", ""];
-  res.render("failed", {
-    activePage: activePage,
+
+  Content.findOne({ name:"tsfdhe"}, function(err, foundContent){
+    if (foundContent === 0) {
+      console.log(err);
+    } else {
+      res.render('failed', {
+        activePage: activePage,
+        tsfdhe: foundContent
+      });
+    }
   });
 });
 
