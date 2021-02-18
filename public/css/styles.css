@@ -211,6 +211,18 @@ h1 {
   padding-top: 40px;
 }
 
+#edit {
+  padding-bottom: 3%;
+}
+
+#edit .row {
+  margin: 1%;
+}
+
+.edit-title{
+  margin-top: 0.5%;
+}
+
 /* max-width: 575px */
 
 @media (max-width: 601px) {

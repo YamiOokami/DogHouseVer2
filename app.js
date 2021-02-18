@@ -10,6 +10,8 @@ const passportLocalMongoose = require("passport-local-mongoose");
 
 const app = express();
 
+//node mailer initialization
+
 let transport = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
@@ -20,9 +22,15 @@ let transport = nodemailer.createTransport({
   },
 });
 
+// main variable for the main page
+
 let activePage = ["", "", ""];
 
+// ejs initialization
+
 app.set("view engine", "ejs");
+
+//body parser initizlization
 
 app.use(
   bodyParser.urlencoded({
@@ -30,18 +38,27 @@ app.use(
   })
 );
 
+
+//public folder loading for css and js files
+
 app.use(express.static("public"));
+
+// passport first initialization + sessions usage
 
 app.use(
   session({
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: false
   })
 );
 
+
 app.use(passport.initialize());
 app.use(passport.session());
+
+
+//mongoose connection
 
 mongoose.connect("mongodb://localhost:27017/doghouseDB", {
   useNewUrlParser: true,
@@ -49,6 +66,9 @@ mongoose.connect("mongodb://localhost:27017/doghouseDB", {
 });
 
 mongoose.set("useCreateIndex", true);
+
+
+//mongoose schemas
 
 const userSchema = new mongoose.Schema({
   username: String,
@@ -59,12 +79,30 @@ const contentSchema = new mongoose.Schema({
   name: String,
   title: String,
   paragraph: String,
+  paragraph1: String,
+  paragraph2: String,
+  paragraph3: String,
+  paragraph4: String,
+  link: String,
+  link1: String,
+  link2: String,
+  link3: String,
+  link4: String
 });
 
 userSchema.plugin(passportLocalMongoose);
 
+//mongoose models
+
 const Content = new mongoose.model("Content", contentSchema);
 const User = new mongoose.model("User", userSchema);
+
+//initilizing passport
+
+passport.use(User.createStrategy());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // check if there is no data in the db and create the default content if there is none
 
@@ -72,40 +110,25 @@ Content.find({ }, function (err, foundContent) {
   if (foundContent.length === 0) {
     Content.insertMany([
 { name: "mdhe", title: "אנחנו דוגהאוס!", paragraph: "אנחנו להקת רוק שאוהבת לעשות שטויות כמו לכתוב טקסט שממלא חלקים באתר!"},
-{ name: "tndhe", title: "רוצים להיות תמיד מעודכנים? הרשמו לניוזלטר שלנו"},
+{ name: "ndhe", title: "רוצים להיות תמיד מעודכנים? הרשמו לניוזלטר שלנו"},
 { name: "omdhe", title: "המוזיקה שלנו"},
-{ name: "tsdhe", title: "הופעות קרובות"},
-{ name: "ps1dhe", paragraph: "הופעה בלבונטין בתאריך ככה ובשעה ככה"},
-{ name: "ps2dhe", paragraph: "הופעה במאדים בתאריך שכזה ושעה שכזו"},
-{ name: "ps3dhe", paragraph: "הופעה שהיא הופעה שכזו וכאלה"},
-{ name: "ps4dhe", paragraph: "הופעה משותפת עם החתולים הסמוראיים"},
-{ name: "ps5dhe", paragraph: "סיבוב הופעות מסביב לעולם ב 80 יום"},
-{ name: "tsudhe", title: "בקשתך התקבלה בהצלחה"},
-{ name: "tsfdhe", title: "בקשתך נכשלה", paragraph: "לצערינו בקשתך לא צלחה, אנא נסה שנית מאוחר יותר"},
+{ name: "sdhe", title: "הופעות קרובות", paragraph: "הופעה בלבונטין בתאריך ככה ובשעה ככה", paragraph1: "הופעה במאדים בתאריך שכזה ושעה שכזו", paragraph2: "הופעה שהיא הופעה שכזו וכאלה", paragraph3: "הופעה משותפת עם החתולים הסמוראיים", paragraph4: "סיבוב הופעות מסביב לעולם ב 80 יום", link:"#", link1:"#", link2:"#", link3:"#", link4:"#"},
+{ name: "sudhe", title: "בקשתך התקבלה בהצלחה"},
+{ name: "fdhe", title: "בקשתך נכשלה", paragraph: "לצערינו בקשתך לא צלחה, אנא נסה שנית מאוחר יותר"},
 { name: "audhe", title: "אז מי אנחנו בכלל?", paragraph:""},
 { name: "mhel", title: "", paragraph: "",},
-{ name: "tnhel", title: ""},
+{ name: "nhel", title: ""},
 { name: "omhel", title: ""},
-{ name: "tshel", title : ""},
-{ name: "ps1hel", paragraph: ""},
-{ name: "ps2hel", paragraph: ""},
-{ name: "ps3hel", paragraph: ""},
-{ name: "ps4hel", paragraph: ""},
-{ name: "ps5hel", paragraph: ""},
-{ name: "tsuhel", title: ""},
-{ name: "tsfhel", title: "", paragraph: ""},
+{ name: "shel", title : "", paragraph: "", paragraph1: "", paragraph2: "", paragraph3: "", paragraph4: "", link: "", link1: "", link2: "", link3: "", link4: ""},
+{ name: "suhel", title: ""},
+{ name: "fhel", title: "", paragraph: ""},
 { name: "auhel", title: "", paragraph:""},
 { name: "mhe", title: "", paragraph: ""},
-{ name: "tnhe", title: ""},
+{ name: "nhe", title: ""},
 { name: "omhe", title: ""},
-{ name: "tshe", title : ""},
-{ name: "ps1he", paragraph: ""},
-{ name: "ps2he", paragraph: ""},
-{ name: "ps3he", paragraph: ""},
-{ name: "ps4he", paragraph: ""},
-{ name: "ps5he", paragraph: ""},
-{ name: "tsuhe", title: ""},
-{ name: "tsfhe", title: "", paragraph: ""},
+{ name: "she", title : "", paragraph: "", paragraph1: "", paragraph2: "", paragraph3: "", paragraph4: "", link: "", link1: "", link2: "", link3: "", link4: ""},
+{ name: "suhe", title: ""},
+{ name: "fhe", title: "", paragraph: ""},
 { name: "auhe", title: "", paragraph:""}
     ]);
     console.log("Found no data in the DB and created the default data");
@@ -114,10 +137,8 @@ Content.find({ }, function (err, foundContent) {
   }
 });
 
-passport.use(User.createStrategy());
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+// main page rendering
 
 app.get("/", function (req, res) {
   activePage = ["active", "", "", ""];
@@ -127,25 +148,22 @@ app.get("/", function (req, res) {
     } else {
       res.render('main', {
         activePage: activePage,
-        // section names
-        //main title and paragraph
-        mthe: foundContent[0].title,
-        mphe: foundContent[0].paragraph,
-        //newsletter
-        tnhe: foundContent[1].title,
-        //our music
-        omthe: foundContent[2].title,
-        //shows
-        tsdhe: foundContent[3].title,
-        ps1he: foundContent[4].paragraph,
-        ps2he: foundContent[5].paragraph,
-        ps3he: foundContent[6].paragraph,
-        ps4he: foundContent[7].paragraph,
-        ps5he: foundContent[8].paragraph
+        // section content
+        //main section content
+        mdhe: foundContent[0],
+        //newsletter content
+        nhe: foundContent[1],
+        //our music content
+        omhe: foundContent[2],
+        //shows content
+        she: foundContent[3]
       });
     }
   });
 });
+
+
+// contact page rendering
 
 app.get("/contact", function (req, res) {
   activePage = ["", "active", "", ""];
@@ -154,73 +172,60 @@ app.get("/contact", function (req, res) {
   });
 });
 
+// about page rendering
+
 app.get("/about", function (req, res) {
   activePage = ["", "", "active", ""];
   Content.findOne({name:"audhe"}, function(err, foundContent){
-    if (foundContent === 0) {
+    if (err) {
       console.log(err);
     } else {
       res.render("about", {
         activePage: activePage,
-        auhe: foundContent.title
+        auhe: foundContent
       });  
     }
   });
 });
 
-/* app.get("/register", function(req, res) {
-  activePage = ["","","active",""];
-  res.render("register", {
-    activePage : activePage
-  });
-});
 
-app.post("/register", function(req, res){
-	User.register({
-    username: req.body.username
-  }, req.body.password, function(err, user){
-    if (err) {
-      console.log(err);
-      res.redirect('/failed');
-    } else {
-      passport.authenticate('local')(req, res, function(){
-        res.redirect('/success');
-      });
-    }
-  });
-}); */
+//sucess page rendering
 
 app.get('/success', function (req, res) {
   activePage = ["", "", ""];
 
-  // finding the specific content I'm looking for and showing it in the page
+  // finding the specific title I'm looking for and showing it in the page
 
-  Content.findOne({ name: "tsudhe" }, function (err, foundContent) {
-    if (foundContent === 0) {
+  Content.findOne({ name: "sudhe" }, function (err, foundContent) {
+    if (err) {
       console.log(err);
     } else {
       res.render('success', {
         activePage: activePage,
-        tsuhe: foundContent,
+        suhe: foundContent
       });
     }
   });
 });
+
+//failed page rendring
 
 app.get('/failed', function (req, res) {
   activePage = ["", "", ""];
 
-  Content.findOne({ name:"tsfdhe"}, function(err, foundContent){
-    if (foundContent === 0) {
+  Content.findOne({ name:"fdhe"}, function(err, foundContent){
+    if (err) {
       console.log(err);
     } else {
       res.render('failed', {
         activePage: activePage,
-        tsfdhe: foundContent
+        fhe: foundContent
       });
     }
   });
 });
+
+//contact function
 
 app.post("/contact", function (req, res) {
   const userName = req.body.userName;
@@ -245,6 +250,9 @@ app.post("/contact", function (req, res) {
   });
 });
 
+
+// login function
+
 app.post("/login", function (req, res) {
   const user = new User({
     username: req.body.username,
@@ -257,26 +265,80 @@ app.post("/login", function (req, res) {
       res.redirect("/failed");
     } else {
       passport.authenticate("local")(req, res, function () {
-        if ((username = process.env.ADMIN)) {
+        if (user.username === process.env.ADMIN) {
           res.redirect("/edit");
+        } else if (user.username === process.env.EPK) {
+            res.redirect("/epk");  
         } else {
-          res.redirect("/success");
+          res.redirect("/");
         }
       });
     }
   });
 });
 
+
+
+
+// edit page rendering
+
+
 app.get("/edit", function (req, res) {
   if (req.isAuthenticated()) {
+    if (req.user.username === process.env.ADMIN) {
+      activePage = ["", "", ""];
+
+      Content.find({}, function(err, foundContent){
+        if (err) {
+          console.log(err);
+        } else {
+          res.render('edit', {
+            activePage: activePage,
+            mhe: foundContent[0],
+            nhe: foundContent[1],
+            omhe: foundContent[2],
+            she: foundContent[3],
+            suhe: foundContent[4],
+            fhe: foundContent[5],
+            auhe: foundContent[6]
+          });
+        }
+      });
+    }
+  } else {
+    res.redirect("/failed");
+  }
+});
+
+
+// edit page post function
+
+app.post("/save", function(req, res){
+  Content.updateOne({name:"sudhe"}, {title: req.body.successTitle}, function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    res.redirect("/success")
+  }    
+  });
+});
+
+
+// epk page rendering
+
+app.get("/epk", function (req, res) {
+  if (req.isAuthenticated()) {
     activePage = ["", "", ""];
-    res.render("edit", {
+    res.render("epk", {
       activePage: activePage,
     });
   } else {
     res.redirect("/failed");
   }
 });
+
+
+//logout function
 
 app.get("/logout", function (req, res) {
   req.logout();

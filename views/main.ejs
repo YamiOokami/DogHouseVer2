@@ -4,14 +4,14 @@
 
 <div class="row">
   <div class="col-lg-6">
-    <h1><%= mthe %></h1>
-    <h3 class="description"><%= mphe %></h3>
+    <h1><%= mdhe.title %></h1>
+    <h3 class="description"><%= mdhe.paragraph %></h3>
     <button type="button" class="btn btn-danger btn-md header-button"><i class="fab fa-youtube"></i><a href="#"> עקבו אחרינו ביוטוב</a></button>
     <button type="button" class="btn btn-light btn-md header-button instgram-button"><i class="fab fa-instagram"></i><a href="#"> עקבו אחרינו באינסטגרם</a></button>
     <button type="button" class="btn btn-primary btn-md header-button"><i class="fab fa-facebook"></i><a href="#"> עקבו אחרינו בפייסבוק</a></button>
     <br>
-    <button type="button" class="btn btn-dark btn-lg header-button" id="ourmusic-btn"><a href="#ourmusic"> <%= omthe %> </a></button>
-    <button type="button" class="btn btn-dark btn-lg header-button" id="shows-btn"><a href="#shows"><%= tsdhe %> </a></button>
+    <button type="button" class="btn btn-dark btn-lg header-button" id="ourmusic-btn"><a href="#ourmusic"> <%= omhe.title %> </a></button>
+    <button type="button" class="btn btn-dark btn-lg header-button" id="shows-btn"><a href="#shows"><%= she.title %> </a></button>
   </div>
   <div class="col-lg-6">
     <div class="embed-responsive embed-responsive-16by9 border-embed">
@@ -26,7 +26,7 @@
 
 <section id="newslatter">
   <h2 class="newslatter-title">
-    <%= tnhe %> 
+    <%= nhe.title %> 
   </h2>
   <div class="container-fluid">
     <form>
@@ -53,7 +53,7 @@
 
 <section id="ourmusic">
   <h2 class="ourmusic-title">
-    <%= omthe %> 
+    <%= omhe.title %> 
   </h2>
   <div class="container-fluid">
     <div class="row">
@@ -76,7 +76,7 @@
 <section id="shows">
   <img src="images/dogbow.png" alt="dog looking down" class="shows-dogbow">
   <h2 class="shows-title">
-    <%= tsdhe %> 
+    <%= she.title %> 
   </h2>
   <div class="container-fluid">
     <div class="row">
@@ -102,11 +102,11 @@
       </div>
       <div class="col-lg-6">
         <ul class="list-group list-group-flush shows-time">
-          <li class="list-group-item"><%= ps1he %> <button type="button" class="btn btn-outline-success btn-sm shows-button"><a href="#">הזמן כרטיסים עכשיו</a></button></li>
-          <li class="list-group-item"><%= ps2he %></li>
-          <li class="list-group-item"><%= ps3he %></li>
-          <li class="list-group-item"><%= ps4he %></li>
-          <li class="list-group-item"><%= ps5he %></li>
+          <li class="list-group-item"><%= she.paragraph %> <button type="button" class="btn btn-outline-success btn-sm shows-button"><a href=<%= she.link %>>הזמן כרטיסים עכשיו</a></button></li>
+          <li class="list-group-item"><%= she.paragraph1 %> <button type="button" class="btn btn-outline-success btn-sm shows-button"><a href=<%= she.link1 %>>הזמן כרטיסים עכשיו</a></button></li>
+          <li class="list-group-item"><%= she.paragraph2 %> <button type="button" class="btn btn-outline-success btn-sm shows-button"><a href=<%= she.link2 %>>הזמן כרטיסים עכשיו</a></button></li>
+          <li class="list-group-item"><%= she.paragraph3 %> <button type="button" class="btn btn-outline-success btn-sm shows-button"><a href=<%= she.link3 %>>הזמן כרטיסים עכשיו</a></button></li>
+          <li class="list-group-item"><%= she.paragraph4 %> <button type="button" class="btn btn-outline-success btn-sm shows-button"><a href=<%= she.link4 %>>הזמן כרטיסים עכשיו</a></button></li>
         </ul>
       </div>
     </div>
