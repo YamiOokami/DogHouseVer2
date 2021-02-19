@@ -81,7 +81,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h3>Shows fifth link</h3>
-                <textarea name="showsPara5" cols="80" rows="1"><%= she.link4 %></textarea>
+                <textarea name="showsLink4" cols="80" rows="1"><%= she.link4 %></textarea>
             </div>
         </div>
         <div class="row">
@@ -116,10 +116,14 @@
             </div>
         </form>  
             <div class="col-lg-4">
+                <form action="/lastmod" method="post">
                 <button type="submit" class="btn btn-dark">Restore to last modified data</button>
+                </form>
             </div>
             <div class="col-lg-4">
+                <form action="/default" method="post">
                 <button type="submit" class="btn btn-dark">Restore to default values</button>
+                </form>
             </div>
         </div>
     </section>

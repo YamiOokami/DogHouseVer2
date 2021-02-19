@@ -123,13 +123,13 @@ Content.find({ }, function (err, foundContent) {
 { name: "suhel", title: ""},
 { name: "fhel", title: "", paragraph: ""},
 { name: "auhel", title: "", paragraph:""},
-{ name: "mhe", title: "", paragraph: ""},
-{ name: "nhe", title: ""},
-{ name: "omhe", title: ""},
-{ name: "she", title : "", paragraph: "", paragraph1: "", paragraph2: "", paragraph3: "", paragraph4: "", link: "", link1: "", link2: "", link3: "", link4: ""},
-{ name: "suhe", title: ""},
-{ name: "fhe", title: "", paragraph: ""},
-{ name: "auhe", title: "", paragraph:""}
+{ name: "mhe", title: "אנחנו דוגהאוס!", paragraph: "אנחנו להקת רוק שאוהבת לעשות שטויות כמו לכתוב טקסט שממלא חלקים באתר!"},
+{ name: "nhe",  title: "רוצים להיות תמיד מעודכנים? הרשמו לניוזלטר שלנו"},
+{ name: "omhe", title: "המוזיקה שלנו"},
+{ name: "she", title: "הופעות קרובות", paragraph: "הופעה בלבונטין בתאריך ככה ובשעה ככה", paragraph1: "הופעה במאדים בתאריך שכזה ושעה שכזו", paragraph2: "הופעה שהיא הופעה שכזו וכאלה", paragraph3: "הופעה משותפת עם החתולים הסמוראיים", paragraph4: "סיבוב הופעות מסביב לעולם ב 80 יום", link:"#", link1:"#", link2:"#", link3:"#", link4:"#"},
+{ name: "suhe", title: "בקשתך התקבלה בהצלחה"},
+{ name: "fhe", title: "בקשתך נכשלה", paragraph: "לצערינו בקשתך לא צלחה, אנא נסה שנית מאוחר יותר"},
+{ name: "auhe", title: "אז מי אנחנו בכלל?", paragraph:""}
     ]);
     console.log("Found no data in the DB and created the default data");
   } else {
@@ -142,9 +142,12 @@ Content.find({ }, function (err, foundContent) {
 
 app.get("/", function (req, res) {
   activePage = ["active", "", "", ""];
-  Content.find({ }, function (err, foundContent) {
-    if (foundContent.length === 0) {
+  Content.find({
+    name: { $in: ["mhe", "nhe", "omhe", "she"]}
+   }, function (err, foundContent) {
+    if (err) {
       console.log(err);
+      res.redirect("/failed");
     } else {
       res.render('main', {
         activePage: activePage,
@@ -176,9 +179,10 @@ app.get("/contact", function (req, res) {
 
 app.get("/about", function (req, res) {
   activePage = ["", "", "active", ""];
-  Content.findOne({name:"audhe"}, function(err, foundContent){
+  Content.findOne({name:"auhe"}, function(err, foundContent){
     if (err) {
       console.log(err);
+      res.redirect("/failed");
     } else {
       res.render("about", {
         activePage: activePage,
@@ -196,9 +200,10 @@ app.get('/success', function (req, res) {
 
   // finding the specific title I'm looking for and showing it in the page
 
-  Content.findOne({ name: "sudhe" }, function (err, foundContent) {
+  Content.findOne({ name: "suhe" }, function (err, foundContent) {
     if (err) {
       console.log(err);
+      res.redirect("/failed");
     } else {
       res.render('success', {
         activePage: activePage,
@@ -216,6 +221,7 @@ app.get('/failed', function (req, res) {
   Content.findOne({ name:"fdhe"}, function(err, foundContent){
     if (err) {
       console.log(err);
+      res.redirect("/");
     } else {
       res.render('failed', {
         activePage: activePage,
@@ -288,7 +294,9 @@ app.get("/edit", function (req, res) {
     if (req.user.username === process.env.ADMIN) {
       activePage = ["", "", ""];
 
-      Content.find({}, function(err, foundContent){
+      Content.find({
+        name: { $in: ["mhe", "nhe", "omhe", "she", "suhe", "fhe", "auhe" ]}
+      }, function(err, foundContent){
         if (err) {
           console.log(err);
         } else {
@@ -313,16 +321,327 @@ app.get("/edit", function (req, res) {
 
 // edit page post function
 
-app.post("/save", function(req, res){
-  Content.updateOne({name:"sudhe"}, {title: req.body.successTitle}, function (err) {
+app.post("/save", function(req, res){  
+ 
+//get current fields data & update last modified fields
+
+Content.find({
+  name: { $in: ["mhe", "nhe", "omhe", "she", "suhe", "fhe", "auhe"]}
+ }, function (err, foundContent) {
   if (err) {
     console.log(err);
+    res.redirect("/failed");
   } else {
-    res.redirect("/success")
-  }    
+    Content.bulkWrite([
+      { updateOne:
+        {
+          "filter": {"name": "mhel"},
+          "update": {
+            "title": foundContent[0].title,
+            "paragraph": foundContent[0].paragraph
+          }
+        }
+      }, {
+        updateOne: {
+          "filter": {"name" : "nhel"},
+          "update": {
+            "title": foundContent[1].title
+          }
+        }
+      }, {
+        updateOne: {
+          "filter": {"name" : "omhel"},
+          "update": {
+            "title": foundContent[2].title
+          }
+        }
+      }, {
+        updateOne: {
+          "filter": {"name" : "shel"},
+          "update": {
+            "title": foundContent[3].title,
+            "paragraph": foundContent[3].paragraph,
+            "paragraph1": foundContent[3].paragraph1,
+            "paragraph2": foundContent[3].paragraph2,
+            "paragraph3": foundContent[3].paragraph3,
+            "paragraph4": foundContent[3].paragraph4,
+            "link": foundContent[3].link,
+            "link1": foundContent[3].link1,
+            "link2": foundContent[3].link2,
+            "link3": foundContent[3].link3,
+            "link4": foundContent[3].link4
+          }
+        }
+      }, {
+        updateOne: {
+          "filter": {"name" : "suhel"},
+          "update": {
+            "title": foundContent[4].title
+          }
+        }
+      } , {
+        updateOne: {
+          "filter": {"name" : "fhel"},
+          "update": {
+            "title": foundContent[5].title,
+            "paragraph": foundContent[5].paragraph
+          }
+        }
+      } , {
+        updateOne: {
+          "filter": {"name" : "auhel"},
+          "update": {
+            "title": foundContent[6].title,
+            "paragraph": foundContent[6].paragraph
+          }
+        }
+      },
+      // update all of the fields that that's been changed in the edit page in the db
+      { updateOne:
+        {
+          "filter": {"name" : "mhe"},
+          "update": {
+            "title": req.body.mainTitle,
+            "paragraph": req.body.mainPara
+          }
+        }
+        }, {
+          updateOne: {
+            "filter": {"name" : "nhe"},
+            "update": {
+              "title": req.body.newslatterTitle
+            }
+          }
+        }, {
+          updateOne: {
+            "filter": {"name" : "omhe"},
+            "update": {
+              "title": req.body.ourmusicTitle
+            }
+          }
+        }, {
+          updateOne: {
+            "filter": {"name" : "she"},
+            "update": {
+              "title": req.body.showsTitle,
+              "paragraph": req.body.showsPara,
+              "paragraph1": req.body.showsPara1,
+              "paragraph2": req.body.showsPara2,
+              "paragraph3": req.body.showsPara3,
+              "paragraph4": req.body.showsPara4,
+              "link": req.body.showsLink,
+              "link2": req.body.showsLink2,
+              "link3": req.body.showsLink3,
+              "link4": req.body.showsLink4
+            }
+          }
+        }, {
+          updateOne: {
+            "filter": {"name" : "suhe"},
+            "update": {
+              "title": req.body.successTitle
+            }
+          }
+        } , {
+          updateOne: {
+            "filter": {"name" : "fhe"},
+            "update": {
+              "title": req.body.failTitle,
+              "paragraph": req.body.failPara
+            }
+          }
+        } , {
+          updateOne: {
+            "filter": {"name" : "auhe"},
+            "update": {
+              "title": req.body.aboutTitle,
+              "paragraph": req.body.aboutPara
+            }
+          }
+        }
+    ], function (err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed")
+      } else {
+        res.redirect("/success")
+      }
+    });
+  }
   });
 });
 
+//restore last edit
+
+app.post("/lastmod", function (req, res){
+  Content.find({
+    name: { $in: ["mhel", "nhel", "omhel", "shel", "suhel", "fhel", "auhel"]}
+   }, function (err, foundContent) {
+    if (err) {
+      console.log(err);
+      res.redirect("/failed");
+    } else {
+      Content.bulkWrite([
+        { updateOne:
+          {
+            "filter": {"name": "mhe"},
+            "update": {
+              "title": foundContent[0].title,
+              "paragraph": foundContent[0].paragraph
+            }
+          }
+        }, {
+          updateOne: {
+            "filter": {"name" : "nhe"},
+            "update": {
+              "title": foundContent[1].title
+            }
+          }
+        }, {
+          updateOne: {
+            "filter": {"name" : "omhe"},
+            "update": {
+              "title": foundContent[2].title
+            }
+          }
+        }, {
+          updateOne: {
+            "filter": {"name" : "she"},
+            "update": {
+              "title": foundContent[3].title,
+              "paragraph": foundContent[3].paragraph,
+              "paragraph1": foundContent[3].paragraph1,
+              "paragraph2": foundContent[3].paragraph2,
+              "paragraph3": foundContent[3].paragraph3,
+              "paragraph4": foundContent[3].paragraph4,
+              "link": foundContent[3].link,
+              "link1": foundContent[3].link1,
+              "link2": foundContent[3].link2,
+              "link3": foundContent[3].link3,
+              "link4": foundContent[3].link4
+            }
+          }
+        }, {
+          updateOne: {
+            "filter": {"name" : "suhe"},
+            "update": {
+              "title": foundContent[4].title
+            }
+          }
+        } , {
+          updateOne: {
+            "filter": {"name" : "fhe"},
+            "update": {
+              "title": foundContent[5].title,
+              "paragraph": foundContent[5].paragraph
+            }
+          }
+        } , {
+          updateOne: {
+            "filter": {"name" : "auhe"},
+            "update": {
+              "title": foundContent[6].title,
+              "paragraph": foundContent[6].paragraph
+            }
+          }
+        }
+      ], function (err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed")
+        } else {
+          res.redirect("/success")
+        }
+      });
+    }
+    });
+});
+
+// restore default values
+
+app.post("/default", function(req, res){
+  Content.find({
+    name: { $in: ["mdhe", "ndhe", "omdhe", "sdhe", "sudhe", "fdhe", "audhe"]}
+   }, function (err, foundContent) {
+    if (err) {
+      console.log(err);
+      res.redirect("/failed");
+    } else {
+      Content.bulkWrite([
+        { updateOne:
+          {
+            "filter": {"name": "mhe"},
+            "update": {
+              "title": foundContent[0].title,
+              "paragraph": foundContent[0].paragraph
+            }
+          }
+        }, {
+          updateOne: {
+            "filter": {"name" : "nhe"},
+            "update": {
+              "title": foundContent[1].title
+            }
+          }
+        }, {
+          updateOne: {
+            "filter": {"name" : "omhe"},
+            "update": {
+              "title": foundContent[2].title
+            }
+          }
+        }, {
+          updateOne: {
+            "filter": {"name" : "she"},
+            "update": {
+              "title": foundContent[3].title,
+              "paragraph": foundContent[3].paragraph,
+              "paragraph1": foundContent[3].paragraph1,
+              "paragraph2": foundContent[3].paragraph2,
+              "paragraph3": foundContent[3].paragraph3,
+              "paragraph4": foundContent[3].paragraph4,
+              "link": foundContent[3].link,
+              "link1": foundContent[3].link1,
+              "link2": foundContent[3].link2,
+              "link3": foundContent[3].link3,
+              "link4": foundContent[3].link4
+            }
+          }
+        }, {
+          updateOne: {
+            "filter": {"name" : "suhe"},
+            "update": {
+              "title": foundContent[4].title
+            }
+          }
+        } , {
+          updateOne: {
+            "filter": {"name" : "fhe"},
+            "update": {
+              "title": foundContent[5].title,
+              "paragraph": foundContent[5].paragraph
+            }
+          }
+        } , {
+          updateOne: {
+            "filter": {"name" : "auhe"},
+            "update": {
+              "title": foundContent[6].title,
+              "paragraph": foundContent[6].paragraph
+            }
+          }
+        }
+      ], function (err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed")
+        } else {
+          res.redirect("/success")
+        }
+      });
+    }
+    });
+});
 
 // epk page rendering
 
