@@ -7,8 +7,8 @@
     <h1><%= mdhe.title %></h1>
     <h3 class="description"><%= mdhe.paragraph %></h3>
     <button type="button" class="btn btn-danger btn-md header-button"><i class="fab fa-youtube"></i><a href="#"> עקבו אחרינו ביוטוב</a></button>
-    <button type="button" class="btn btn-light btn-md header-button instgram-button"><i class="fab fa-instagram"></i><a href="#"> עקבו אחרינו באינסטגרם</a></button>
-    <button type="button" class="btn btn-primary btn-md header-button"><i class="fab fa-facebook"></i><a href="#"> עקבו אחרינו בפייסבוק</a></button>
+    <button type="button" class="btn btn-md  btn-instagram header-button"><i class="fab fa-instagram"></i><a href="#"> עקבו אחרינו באינסטגרם</a></button>
+    <button type="button" class="btn btn-md  btn-facebook header-button"><i class="fab fa-facebook"></i><a href="#"> עקבו אחרינו בפייסבוק</a></button>
     <br>
     <button type="button" class="btn btn-dark btn-lg header-button" id="ourmusic-btn"><a href="#ourmusic"> <%= omhe.title %> </a></button>
     <button type="button" class="btn btn-dark btn-lg header-button" id="shows-btn"><a href="#shows"><%= she.title %> </a></button>
@@ -22,23 +22,27 @@
 </div>
 </section>
 
-<!-- Newslatter -->
+<!-- Newsletter -->
 
-<section id="newslatter">
-  <h2 class="newslatter-title">
+<section id="newsletter">
+  <h2 class="newsletter-title">
     <%= nhe.title %> 
   </h2>
   <div class="container-fluid">
-    <form>
+    <form action="/news" method="post">
       <div class="form-row justify-content-md-center">
         <div class="col-auto">
-          <label class="sr-only" for="inlineFormInput">שם מלא</label>
-          <input type="text" class="form-control mb-2" id="inlineFormInput" placeholder="שם מלא">
+          <label class="sr-only" for="inlineFormInput">שם פרטי</label>
+          <input type="text" name="fName" class="form-control mb-2" id="inlineFormInput" placeholder="שם פרטי">
+        </div>
+        <div class="col-auto">
+          <label class="sr-only" for="inlineFormInput">שם משפחה</label>
+          <input type="text" name="lName" class="form-control mb-2" id="inlineFormInput" placeholder="שם משפחה">
         </div>
         <div class="col-auto">
           <label class="sr-only" for="inlineFormInputGroup">מייל</label>
           <div class="input-group mb-2">
-            <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="מייל">
+            <input type="text" name="email" class="form-control" id="inlineFormInputGroup" placeholder="מייל">
           </div>
         </div>
         <div class="col-auto">

@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const https = require ("https");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const nodemailer = require("nodemailer");
@@ -21,10 +22,6 @@ let transport = nodemailer.createTransport({
     pass: process.env.GMAIL_PASS,
   },
 });
-
-// main variable for the main page
-
-let activePage = ["", "", ""];
 
 // ejs initialization
 
@@ -114,7 +111,7 @@ Content.find({ }, function (err, foundContent) {
 { name: "omdhe", title: "המוזיקה שלנו"},
 { name: "sdhe", title: "הופעות קרובות", paragraph: "הופעה בלבונטין בתאריך ככה ובשעה ככה", paragraph1: "הופעה במאדים בתאריך שכזה ושעה שכזו", paragraph2: "הופעה שהיא הופעה שכזו וכאלה", paragraph3: "הופעה משותפת עם החתולים הסמוראיים", paragraph4: "סיבוב הופעות מסביב לעולם ב 80 יום", link:"#", link1:"#", link2:"#", link3:"#", link4:"#"},
 { name: "sudhe", title: "בקשתך התקבלה בהצלחה"},
-{ name: "fdhe", title: "בקשתך נכשלה", paragraph: "לצערינו בקשתך לא צלחה, אנא נסה שנית מאוחר יותר"},
+{ name: "fdhe", title: "משהו השתבש...", paragraph: "נראה שמשהו השתבש ובקשתך לא התקבלה. אנא נסה שנית מאוחר יותר"},
 { name: "audhe", title: "אז מי אנחנו בכלל?", paragraph:""},
 { name: "mhel", title: "", paragraph: "",},
 { name: "nhel", title: ""},
@@ -128,14 +125,43 @@ Content.find({ }, function (err, foundContent) {
 { name: "omhe", title: "המוזיקה שלנו"},
 { name: "she", title: "הופעות קרובות", paragraph: "הופעה בלבונטין בתאריך ככה ובשעה ככה", paragraph1: "הופעה במאדים בתאריך שכזה ושעה שכזו", paragraph2: "הופעה שהיא הופעה שכזו וכאלה", paragraph3: "הופעה משותפת עם החתולים הסמוראיים", paragraph4: "סיבוב הופעות מסביב לעולם ב 80 יום", link:"#", link1:"#", link2:"#", link3:"#", link4:"#"},
 { name: "suhe", title: "בקשתך התקבלה בהצלחה"},
-{ name: "fhe", title: "בקשתך נכשלה", paragraph: "לצערינו בקשתך לא צלחה, אנא נסה שנית מאוחר יותר"},
-{ name: "auhe", title: "אז מי אנחנו בכלל?", paragraph:""}
+{ name: "fhe", title: "משהו השתבש...", paragraph: "נראה שמשהו השתבש ובקשתך לא התקבלה. אנא נסה שנית מאוחר יותר"},
+{ name: "auhe", title: "אז מי אנחנו בכלל?", paragraph:""},
+{ name : "mden", title : "We are DogHouse!", "paragraph" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas et sollicitudin massa."},
+{ name : "nden", title : "Want to stay updated? Sign up for our newsletter"},
+{ name : "omden", title : "Our Music"},
+{ name : "sden", title : "Upcoming Shows", "paragraph" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph1" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph2" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph3" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph4" : "Lorem ipsum dolor sit amet, consectetur.", "link" : "#", "link1" : "#", "link2" : "#", "link3" : "#", "link4" : "#"},
+{ name : "suden", title : "Your request was successfully submitted"},
+{ name : "fden", title : "Something went wrong", "paragraph" : "Please try again later"},
+{ name : "auden", title : "About Us", "paragraph" : ""},
+{ name : "menl", title : "", "paragraph" : ""},
+{ name : "nenl", title : ""},
+{ name : "omenl", title : ""},
+{ name : "senl", title : "", "paragraph" : "", "paragraph1" : "", "paragraph2" : "", "paragraph3" : "", "paragraph4" : "", "link" : "#", "link1" : "#", "link2" : "#", "link3" : "#", "link4" : "#"},
+{ name : "suenl", title : ""},
+{ name : "fenl", title : "", "paragraph" : ""},
+{ name : "auenl", title : "", "paragraph" : ""},
+{ name : "men", title : "We are DogHouse!", "paragraph" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas et sollicitudin massa."},
+{ name : "nen", title : "Want to stay updated? Sign up for our newsletter"},
+{ name : "omen", title : "Our Music"},
+{ name : "sen", title : "Upcoming Shows", "paragraph" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph1" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph2" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph3" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph4" : "Lorem ipsum dolor sit amet, consectetur.", "link" : "#", "link1" : "#", "link2" : "#", "link3" : "#", "link4" : "#"},
+{ name : "suen", title : "Your request was successfully submitted"},
+{ name : "fen", title : "Something went wrong", "paragraph" : "Please try again later"},
+{ name : "auen", title : "About Us", "paragraph" : ""}
     ]);
     console.log("Found no data in the DB and created the default data");
   } else {
     console.log("No need to create default content, you are good to go :)");
   }
 });
+
+//main variable for language
+
+let lang="heb";
+
+// main variable for the activated page
+
+let activePage = [];
 
 
 // main page rendering
@@ -165,6 +191,82 @@ app.get("/", function (req, res) {
   });
 });
 
+// login function
+
+app.post("/login", function (req, res) {
+  const user = new User({
+    username: req.body.username,
+    password: req.body.password,
+  });
+
+  req.login(user, function (err) {
+    if (err) {
+      console.log(err);
+      res.redirect("/failed");
+    } else {
+      passport.authenticate("local")(req, res, function () {
+        if (user.username === process.env.ADMIN) {
+          res.redirect("/edit");
+        } else if (user.username === process.env.EPK) {
+            res.redirect("/epk");  
+        } else {
+          res.redirect("/");
+        }
+      });
+    }
+  });
+});
+
+// newslatter function
+/* 
+app.post("/news", function (req, res) {
+  const fisrName = req.body.fName;
+  const lastName = req.body.lName;
+  const email = req.body.email;
+
+  const data = {
+    members: [
+      {
+        email_address: email,
+        status: "subscribed",
+        merge_fields: {
+          FNAME: fistName,
+          LNAME: lastName
+        }
+      }
+    ]
+  };
+
+const jasonData = JASON.stringify(data);
+
+// needs url from mailchimp
+const url = "https://us7.api.mailchimp.com/3.0/lists/<list-id>"
+
+const options = {
+  method: "POST",
+
+  // needs auth key from mailchimp
+  auth: "doghouseband7:<api-key>"
+}
+
+const request = https.request(url, options, function(response){
+  if (response.statusCode === 200) {
+    res.redirect("/success");
+  } else {
+    res.redirect("/failed");
+  }
+
+  response.on("data", function(data){
+    console.log(JASON.parse(data));
+  });
+
+});
+
+  request.write(jasonData);
+  request.end()
+
+}); */
+
 
 // contact page rendering
 
@@ -172,6 +274,31 @@ app.get("/contact", function (req, res) {
   activePage = ["", "active", "", ""];
   res.render("contact", {
     activePage: activePage,
+  });
+});
+
+//contact function
+
+app.post("/contact", function (req, res) {
+  const userName = req.body.userName;
+  const userEmail = req.body.userEmail;
+  const userMessage = req.body.userMessage;
+
+  const finalMessage = {
+    from: userEmail,
+    to: process.env.GMAIL_USER,
+    subject: "הודעה שהתקבלה דרך האתר מ" + userName,
+    text: userMessage + " מייל לחזרה: " + userEmail,
+  };
+
+  transport.sendMail(finalMessage, function (err, info) {
+    if (err) {
+      console.log(err);
+      res.redirect("/failed");
+    } else {
+      console.log("mail sent sucessfully");
+      res.redirect("/success");
+    }
   });
 });
 
@@ -218,7 +345,7 @@ app.get('/success', function (req, res) {
 app.get('/failed', function (req, res) {
   activePage = ["", "", ""];
 
-  Content.findOne({ name:"fdhe"}, function(err, foundContent){
+  Content.findOne({ name:"fhe"}, function(err, foundContent){
     if (err) {
       console.log(err);
       res.redirect("/");
@@ -230,61 +357,6 @@ app.get('/failed', function (req, res) {
     }
   });
 });
-
-//contact function
-
-app.post("/contact", function (req, res) {
-  const userName = req.body.userName;
-  const userEmail = req.body.userEmail;
-  const userMessage = req.body.userMessage;
-
-  const finalMessage = {
-    from: userEmail,
-    to: process.env.GMAIL_USER,
-    subject: "הודעה שהתקבלה דרך האתר מ" + userName,
-    text: userMessage + " מייל לחזרה: " + userEmail,
-  };
-
-  transport.sendMail(finalMessage, function (err, info) {
-    if (err) {
-      console.log(err);
-      res.redirect("/failed");
-    } else {
-      console.log("mail sent sucessfully");
-      res.redirect("/success");
-    }
-  });
-});
-
-
-// login function
-
-app.post("/login", function (req, res) {
-  const user = new User({
-    username: req.body.username,
-    password: req.body.password,
-  });
-
-  req.login(user, function (err) {
-    if (err) {
-      console.log(err);
-      res.redirect("/failed");
-    } else {
-      passport.authenticate("local")(req, res, function () {
-        if (user.username === process.env.ADMIN) {
-          res.redirect("/edit");
-        } else if (user.username === process.env.EPK) {
-            res.redirect("/epk");  
-        } else {
-          res.redirect("/");
-        }
-      });
-    }
-  });
-});
-
-
-
 
 // edit page rendering
 

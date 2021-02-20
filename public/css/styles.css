@@ -72,35 +72,18 @@ h1 {
   color: inherit;
 }
 
-.instgram-button {
-  background-color: #af78d3;
-  border-color: #a365cd;
-  color: #fff;
-}
-
-.instgram-button:hover {
-  background-color: #833ab4;
-  border-color: #7e38ad;
-  color: #fff;
-}
-
-.instgram-button:focus,
-.instgram-button.focus {
-  box-shadow: 0 0 0 .2rem rgba(91, 194, 194, 0.5)
-}
-
 .description {
   text-align: right;
 }
 
-/* Newslatter */
+/* Newsletter */
 
-#newslatter {
+#newsletter {
   margin-top: 1%;
   margin-bottom: -5%;
 }
 
-.newslatter-title {
+.newsletter-title {
   padding-top: 1%;
   margin-bottom: 0;
 }
