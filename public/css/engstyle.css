@@ -36,6 +36,10 @@ h1 {
 }
 
 /* navbar */
+.navbar {
+  direction: rtl;
+}
+
 
 
 .nav-link {
@@ -68,35 +72,23 @@ h1 {
   color: inherit;
 }
 
-.instgram-button {
-  background-color: #af78d3;
-  border-color: #a365cd;
+.globe {
   color: #fff;
-}
-
-.instgram-button:hover {
-  background-color: #833ab4;
-  border-color: #7e38ad;
-  color: #fff;
-}
-
-.instgram-button:focus,
-.instgram-button.focus {
-  box-shadow: 0 0 0 .2rem rgba(91, 194, 194, 0.5)
+  font-size: 2em;
 }
 
 .description {
-  text-align: right;
+  text-align: left;
 }
 
 /* Newslatter */
 
-#newslatter {
+#newsletter {
   margin-top: 1%;
   margin-bottom: -5%;
 }
 
-.newslatter-title {
+.newsletter-title {
   padding-top: 1%;
   margin-bottom: 0;
 }
@@ -139,7 +131,7 @@ h1 {
 }
 
 .shows-time {
-  text-align: right;
+  text-align: center;
 }
 
 .shows-button {
@@ -194,9 +186,15 @@ h1 {
 }
 
 
+#contact {
+  text-align: left;
+}
+
 .contact-title {
   margin-bottom: 10px;
+  text-align: center;
 }
+
 
 .dog-stick {
   width: 73%;

@@ -72,6 +72,11 @@ h1 {
   color: inherit;
 }
 
+.globe {
+  color: #fff;
+  font-size: 2em;
+}
+
 .description {
   text-align: right;
 }

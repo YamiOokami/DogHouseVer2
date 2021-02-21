@@ -1,5 +1,9 @@
 <!DOCTYPE html>
+<% if (lang === "en") { %>
+  <html lang="en" dir="ltr">
+<% } else { %>
 <html lang="he" dir="rtl">
+<% } %> 
 
 <head>
   <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,8 +18,11 @@
   <!-- StyleSheets -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <link rel="stylesheet" href="css/bootstrap-social.css">
+  <% if (lang === "en") { %>
+  <link rel="stylesheet" href="css/engstyle.css"> 
+  <% } else { %>
   <link rel="stylesheet" href="css/styles.css">
-
+  <% } %> 
 
 </head>
 
@@ -25,13 +32,51 @@
   <section id="title">
     <div class="container-fluid">
       <nav class="navbar navbar-expand-lg navbar-dark">
-        <span><a class="navbar-brand" href="#">
+        <span>
+          <a class="navbar-brand" href="/">
             <img src="images/doghouselogowhite.png" width="100" height="60" alt="DogHouse logo" class="doghouselogo">
           </a>
         </span>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        <% if (lang === "en") { %>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sign In</a>
+                <div class="dropdown-menu">
+                  <form action="/login" method="post">
+                    <div class="mb3 dropdownitem">
+                      <label for="userId" class="form-label">User Name</label>
+                      <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb3 dropdownitem">
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="mb3 dropdownitem">
+                      <button type="submit" class="btn btn-success" name="button">Login</button>
+                    </div>
+                  </form>
+                </div>
+              </li>
+              <li class="navbar-item <%= activePage[1] %> ">
+                <a class="nav-link" href="/contact">Contact Us</a>
+              </li>
+              <li class="navbar-item <%= activePage[2] %> ">
+                <a class="nav-link" href="/about">About Us</a>
+              </li>
+              <li class="navber-item <%= activePage[0] %> ">
+                <a class="nav-link" href="/">Main</a>
+              </li>
+              <li class="navbar-item">
+                <form action="/lang" method="post">
+                  <button type="submit" class="btn btn-lg header-button globe"><i class="fas fa-globe-asia"></i></button>
+                </form>
+              </li>
+            </ul>  
+        <% } else { %>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
@@ -61,6 +106,12 @@
             <li class="navber-item <%= activePage[0] %> ">
               <a class="nav-link" href="/">עמוד ראשי</a>
             </li>
+            <li class="navbar-item">
+              <form action="/lang" method="post">
+                <button type="submit" class="btn btn-lg header-button globe"><i class="fas fa-globe-americas"></i></button>
+              </form>
+            </li>
           </ul>
+          <% } %> 
         </div>
       </nav>
