@@ -43,6 +43,25 @@
         <% if (lang === "en") { %>
           <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
             <ul class="navbar-nav mr-auto">
+              <% if (loggedInUser === "admin" || loggedInUser === "epk") { %>
+               <li class="navbar-item">
+                 <form action="/logout" method="post">
+                  <button type="submit" class="btn btn-danger" name="logout">Log Out</button>
+                </form>
+               </li>
+               <% if (loggedInUser === "admin") { %>
+                <li class="navbar-item <%= activePage[4] %> ">
+                  <a class="nav-link" href="/edit">Edit the website</a>
+                 </li>
+                 <li class="navbar-item <%= activePage[3] %> ">
+                  <a class="nav-link" href="/epk">EPK</a>
+                 </li>
+               <% } else { %>
+               <li class="navbar-item <%= activePage[3] %> ">
+                <a class="nav-link" href="/epk">EPK</a>
+               </li>
+               <% } %> 
+              <% } else { %>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Sign In</a>
                 <div class="dropdown-menu">
@@ -61,6 +80,7 @@
                   </form>
                 </div>
               </li>
+              <% } %> 
               <li class="navbar-item <%= activePage[1] %> ">
                 <a class="nav-link" href="/contact">Contact Us</a>
               </li>
@@ -79,6 +99,25 @@
         <% } else { %>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
           <ul class="navbar-nav ml-auto">
+            <% if (loggedInUser === "admin" || loggedInUser === "epk") { %>
+              <li class="nav-item">
+                <form action="/logout" method="post">
+                 <button type="submit" class="btn btn-danger" name="logout">התנתק</button>
+               </form>
+              </li>
+              <% if (loggedInUser === "admin") { %>
+                <li class="navbar-item <%= activePage[4] %> ">
+                  <a class="nav-link" href="/edit">עריכת האתר</a>
+                 </li>
+                 <li class="navbar-item <%= activePage[3] %> ">
+                  <a class="nav-link" href="/epk">EPK</a>
+                 </li>
+               <% } else { %>
+               <li class="navbar-item <%= activePage[3] %> ">
+                <a class="nav-link" href="/epk">EPK</a>
+               </li>
+               <% } %> 
+            <% } else { %>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">התחברות לאתר</a>
               <div class="dropdown-menu">
@@ -97,6 +136,7 @@
                 </form>
               </div>
             </li>
+            <% } %> 
             <li class="navbar-item <%= activePage[2] %> ">
               <a class="nav-link" href="/about">קצת עלינו</a>
             </li>

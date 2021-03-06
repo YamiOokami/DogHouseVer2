@@ -5,7 +5,140 @@
 <div class="conatiner-fluid">
     <section id="edit">
         <h1 class="edit-title">Edit the website</h1>    
-        <form action="/save" method="post">
+            <% if (lang === "en") { %>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <h3>Link to music video</h3>
+                        <textarea name="mainLink" cols="60" rows="2"><%= main.link %></textarea>
+                    </div>
+                    <div class="col-lg-4">
+                        <h3>Main Title</h3>
+                        <textarea name="mainTitle" cols="60" rows="2"><%= main.title %></textarea>
+                    </div>
+                    <div class="col-lg-4">
+                        <h3>Main Paragraph</h3>
+                        <textarea name="mainPara" cols="60" rows="2"><%= main.paragraph %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3>Newslatter Title</h3>
+                        <textarea name="newslatterTitle" cols="80" rows="1"><%= news.title %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <h3>Our Music Spotify</h3>
+                        <textarea name="ourmusicLink1" cols="60" rows="2"><%= ourmusic.link1 %></textarea>
+                    </div>
+                    <div class="col-lg-4">
+                        <h3>Our Music Title</h3>
+                        <textarea name="ourmusicTitle" cols="60" rows="2"><%= ourmusic.title %></textarea>
+                    </div>
+                    <div class="col-lg-4">
+                        <h3>Our Music YouTube</h3>
+                        <textarea name="ourmusicLink" cols="60" rows="2"><%= ourmusic.link %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3>Shows Title</h3>
+                        <textarea name="showsTitle" cols="80" rows="1"><%= shows.title %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3>Shows first paragraph</h3>
+                        <textarea name="showsPara" cols="80" rows="1"><%= shows.paragraph %></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>Shows first link</h3>
+                        <textarea name="showsLink" cols="80" rows="1"><%= shows.link %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                        <div class="col-lg-6">
+                            <h3>Shows second paragraph</h3>
+                            <textarea name="showsPara1" cols="80" rows="1"><%= shows.paragraph1 %></textarea>
+                        </div>
+                        <div class="col-lg-6">
+                            <h3>Shows second link</h3>
+                            <textarea name="showsLink1" cols="80" rows="1"><%= shows.link1 %></textarea>
+                        </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3>Shows third paragraph</h3>
+                        <textarea name="showsPara2" cols="80" rows="1"><%= shows.paragraph2 %></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>Shows third link</h3>
+                        <textarea name="showsLink2" cols="80" rows="1"><%= shows.link2 %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3>Shows forth paragraph</h3>
+                        <textarea name="showsPara3" cols="80" rows="1"><%= shows.paragraph3 %></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>Shows forth link</h3>
+                        <textarea name="showsLink3" cols="80" rows="1"><%= shows.link3 %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3>Shows fifth paragraph</h3>
+                        <textarea name="showsPara4" cols="80" rows="1"><%= shows.paragraph4 %></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>Shows fifth link</h3>
+                        <textarea name="showsLink4" cols="80" rows="1"><%= shows.link4 %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3>Success Title</h3>
+                        <textarea name="successTitle" cols="80" rows="1"><%= success.title %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3>Fail title</h3>
+                        <textarea name="failTitle" cols="80" rows="1"><%= failed.title %></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>Fail Paragraph</h3>
+                        <textarea name="failPara" cols="80" rows="1"><%= failed.paragraph %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3>About Title</h3>
+                        <textarea name="aboutTitle" cols="80" rows="1"><%= aboutus.title %></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3>About paragraph</h3>
+                        <textarea name="aboutPara" cols="80" rows="1"><%= aboutus.paragraph %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <form action="/default" method="post">
+                        <button type="submit" class="btn btn-dark">Restore to default values</button>
+                        </form>
+                    </div>
+                    <div class="col-lg-4">
+                        <form action="/lastmod" method="post">
+                        <button type="submit" class="btn btn-dark">Restore to last modified data</button>
+                        </form>
+                    </div>
+                    <div class="col-lg-4">
+                            <form action="/save" method="post">
+                            <button type="submit" class="btn btn-dark">Save Changes</button>
+                            </form>  
+                     </div>
+            <% } else { %>
         <div class="row">
             <div class="col-lg-4">
                 <h3>Main Paragraph</h3>
@@ -124,9 +257,10 @@
         </div>
         <div class="row">
             <div class="col-lg-4">
+                <form action="/save" method="post"> 
                 <button type="submit" class="btn btn-dark">Save Changes</button>
+                </form>
             </div>
-        </form>  
             <div class="col-lg-4">
                 <form action="/lastmod" method="post">
                 <button type="submit" class="btn btn-dark">Restore to last modified data</button>
@@ -137,7 +271,7 @@
                 <button type="submit" class="btn btn-dark">Restore to default values</button>
                 </form>
             </div>
-        </div>
+                <% } %> 
     </section>
 </div>
 

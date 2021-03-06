@@ -157,26 +157,65 @@ Content.find({ }, function (err, foundContent) {
 
 //main variable for language
 
-let lang="en";
+let lang = "he";
+
+// main variable for logged in
+
+let loggedInUser = "";
 
 // main variable for the activated page
 
 let activePage = [];
 
+const editpageHeb = ["mhe", "nhe", "omhe", "she","suhe","fhe","auhe"];
+
+const editpageEng = ["men", "nen", "omen", "sen","suen","fen","auen"];
+
+const mainPageHeb = ["mhe", "nhe", "omhe", "she"];
+
+const mainPageEng = ["men", "nen", "omen", "sen"];
+
+const aboutPageHeb = ["auhe"];
+
+const aboutPageEng = ["auen"];
+
+const successPageHeb = ["suhe"];
+
+const successPageEng = ["suen"];
+
+const failedPageHeb = ["fhe"];
+
+const failedPageEng = ["fen"];
+
+function findContent(itemsToFind) {
+  if (itemsToFind.length === 1) {
+    let dataFound = Content.findOne({
+      name: itemsToFind
+    });
+    return dataFound;
+  } else {
+    let dataFound = Content.find({
+      name: { $in: itemsToFind}
+    }); 
+    return dataFound;
+  }
+}
+
 // main page rendering
 
 app.get("/", function (req, res) {
-  activePage = ["active", "", "", ""];
+  activePage = [];
+  activePage[0] = "active";
   if (lang === "en") {
-    Content.find({
-      name: { $in: ["men", "nen", "omen", "sen"]}
-     }, function (err, foundContent) {
+    let query = findContent(mainPageEng);
+    query.exec(function (err, foundContent) {
       if (err) {
         console.log(err);
         res.redirect("/failed");
       } else {
         res.render('main', {
           lang: lang,
+          loggedInUser: loggedInUser,
           activePage: activePage,
           // section content
           //main section content
@@ -191,15 +230,15 @@ app.get("/", function (req, res) {
       }
     });
   } else {
-    Content.find({
-      name: { $in: ["mhe", "nhe", "omhe", "she"]}
-     }, function (err, foundContent) {
+    let query = findContent(mainPageHeb);
+    query.exec(function (err, foundContent) {
       if (err) {
         console.log(err);
         res.redirect("/failed");
       } else {
         res.render('main', {
           lang: lang,
+          loggedInUser: loggedInUser,
           activePage: activePage,
           // section content
           //main section content
@@ -212,7 +251,7 @@ app.get("/", function (req, res) {
           shows: foundContent[3]
         });
       }
-    }); 
+    });
   }
 });
 
@@ -231,8 +270,10 @@ app.post("/login", function (req, res) {
     } else {
       passport.authenticate("local")(req, res, function () {
         if (user.username === process.env.ADMIN) {
+          loggedInUser = "admin";
           res.redirect("/edit");
         } else if (user.username === process.env.EPK) {
+            loggedInUser = "epk";
             res.redirect("/epk");  
         } else {
           res.redirect("/");
@@ -310,9 +351,11 @@ const request = https.request(url, options, function(response){
 // contact page rendering
 
 app.get("/contact", function (req, res) {
-  activePage = ["", "active", "", ""];
+  activePage = [];
+  activePage[1] = "active";
   res.render("contact", {
     activePage: activePage,
+    loggedInUser: loggedInUser,
     lang: lang
   });
 });
@@ -345,10 +388,12 @@ app.post("/contact", function (req, res) {
 // about page rendering
 
 app.get("/about", function (req, res) {
-  activePage = ["", "", "active", ""];
+  activePage = [];
+  activePage[2] ="active";
 
   if (lang === "en") {
-    Content.findOne({name:"auen"}, function(err, foundContent){
+    let query = findContent(aboutPageEng);
+    query.exec(function (err, foundContent) {
       if (err) {
         console.log(err);
         res.redirect("/failed");
@@ -356,23 +401,26 @@ app.get("/about", function (req, res) {
         res.render("about", {
           activePage: activePage,
           lang: lang,
+          loggedInUser: loggedInUser,
+          aboutus: foundContent
+        });  
+      }
+    });    
+  } else {
+    let query = findContent(aboutPageHeb);
+    query.exec(function (err, foundContent) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } else {
+        res.render("about", {
+          activePage: activePage,
+          lang: lang,
+          loggedInUser: loggedInUser,
           aboutus: foundContent
         });  
       }
     });
-  } else {
-    Content.findOne({name:"auhe"}, function(err, foundContent){
-      if (err) {
-        console.log(err);
-        res.redirect("/failed");
-      } else {
-        res.render("about", {
-          activePage: activePage,
-          lang: lang,
-          aboutus: foundContent
-        });  
-      }
-    }); 
   }
 });
 
@@ -380,12 +428,13 @@ app.get("/about", function (req, res) {
 //sucess page rendering
 
 app.get('/success', function (req, res) {
-  activePage = ["", "", ""];
+  activePage = [];
 
   // finding the specific title I'm looking for and showing it in the page
 
   if (lang === "en") {
-    Content.findOne({ name: "suen" }, function (err, foundContent) {
+    let query = findContent(successPageEng);
+    query.exec(function (err, foundContent) {
       if (err) {
         console.log(err);
         res.redirect("/failed");
@@ -393,12 +442,14 @@ app.get('/success', function (req, res) {
         res.render('success', {
           activePage: activePage,
           lang: lang,
+          loggedInUser: loggedInUser,
           success: foundContent
         });
       }
     });
   } else {
-    Content.findOne({ name: "suhe" }, function (err, foundContent) {
+    let query = findContent(successPageHeb);
+    query.exec(function (err, foundContent) {
       if (err) {
         console.log(err);
         res.redirect("/failed");
@@ -406,20 +457,22 @@ app.get('/success', function (req, res) {
         res.render('success', {
           activePage: activePage,
           lang: lang,
+          loggedInUser: loggedInUser,
           success: foundContent
         });
       }
-    }); 
+    });
   }
 });
 
 //failed page rendring
 
 app.get('/failed', function (req, res) {
-  activePage = ["", "", ""];
+  activePage = [];
 
   if (lang === "en") {
-    Content.findOne({ name:"fen"}, function(err, foundContent){
+    let query = findContent(failedPageEng);
+    query.exec(function(err, foundContent) {
       if (err) {
         console.log(err);
         res.redirect("/");
@@ -427,12 +480,14 @@ app.get('/failed', function (req, res) {
         res.render('failed', {
           activePage: activePage,
           lang: lang,
+          loggedInUser: loggedInUser,
           failed: foundContent
         });
       }
     });
   } else {
-    Content.findOne({ name:"fhe"}, function(err, foundContent){
+    let query = findContent(failedPageHeb);
+    query.exec(function(err, foundContent) {
       if (err) {
         console.log(err);
         res.redirect("/");
@@ -440,10 +495,11 @@ app.get('/failed', function (req, res) {
         res.render('failed', {
           activePage: activePage,
           lang: lang,
+          loggedInUser: loggedInUser,
           failed: foundContent
         });
       }
-    }); 
+    });
   }
 });
 
@@ -453,17 +509,19 @@ app.get('/failed', function (req, res) {
 app.get("/edit", function (req, res) {
   if (req.isAuthenticated()) {
     if (req.user.username === process.env.ADMIN) {
-      activePage = ["", "", ""];
+      activePage = [];
+      activePage[4] = "active";
       if (lang === "en") {
-        Content.find({
-          name: { $in: ["men", "nen", "omen", "sen", "suen", "fen", "auen" ]}
-        }, function(err, foundContent){
+        let query = findContent(editpageEng);
+        query.exec(function (err, foundContent) {
           if (err) {
             console.log(err);
+            res.redirect("/failed");
           } else {
             res.render('edit', {
               activePage: activePage,
               lang: lang,
+              loggedInUser: loggedInUser,
               main: foundContent[0],
               news: foundContent[1],
               ourmusic: foundContent[2],
@@ -475,15 +533,16 @@ app.get("/edit", function (req, res) {
           }
         });
       } else {
-        Content.find({
-          name: { $in: ["mhe", "nhe", "omhe", "she", "suhe", "fhe", "auhe" ]}
-        }, function(err, foundContent){
+        let query = findContent(editpageHeb);
+        query.exec(function(err, foundContent) {
           if (err) {
             console.log(err);
+            res.redirect("/failed")
           } else {
             res.render('edit', {
               activePage: activePage,
               lang: lang,
+              loggedInUser: loggedInUser,
               main: foundContent[0],
               news: foundContent[1],
               ourmusic: foundContent[2],
@@ -502,7 +561,7 @@ app.get("/edit", function (req, res) {
 });
 
 
-// edit page post function
+// edit page update the database function
 
 app.post("/save", function(req, res){  
  
@@ -1171,9 +1230,12 @@ app.post("/default", function(req, res){
 
 app.get("/epk", function (req, res) {
   if (req.isAuthenticated()) {
-    activePage = ["", "", ""];
+    activePage = [];
+    activePage[3] = "active";
     res.render("epk", {
       activePage: activePage,
+      lang: lang,
+      loggedInUser: loggedInUser
     });
   } else {
     res.redirect("/failed");
@@ -1183,8 +1245,9 @@ app.get("/epk", function (req, res) {
 
 //logout function
 
-app.get("/logout", function (req, res) {
+app.post("/logout", function (req, res) {
   req.logout();
+  loggedInUser = "";
   res.redirect("/");
 });
 
