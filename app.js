@@ -8,8 +8,22 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const passport = require("passport");
 const passportLocalMongoose = require("passport-local-mongoose");
+const fs = require("fs");
+const path = require("path");
+const multer = require("multer");
 
 const app = express();
+
+// multer initialization
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.filedname + '-' + Date.now())
+  }
+});
 
 //node mailer initialization
 
@@ -31,7 +45,7 @@ app.set("view engine", "ejs");
 
 app.use(
   bodyParser.urlencoded({
-    extended: true,
+    extended: true
   })
 );
 
@@ -87,12 +101,30 @@ const contentSchema = new mongoose.Schema({
   link4: String
 });
 
+const imageSchema = new mongoose.Schema({
+  name: String,
+  desc: String,
+  img: 
+  {
+    data: Buffer,
+    contentType: String
+  }
+});
+
+
+const epkSchema = new mongoose.Schema({
+  name: String,
+  content: String
+});
+
 userSchema.plugin(passportLocalMongoose);
 
 //mongoose models
 
 const Content = new mongoose.model("Content", contentSchema);
 const User = new mongoose.model("User", userSchema);
+const Image = new mongoose.model("Image", imageSchema);
+const Epk = new mongoose.model("Epk",epkSchema);
 
 //initilizing passport
 
@@ -155,6 +187,18 @@ Content.find({ }, function (err, foundContent) {
   }
 });
 
+Epk.find({}, function (err, foundEpk) {
+  if (foundEpk.length === 0) {
+    Epk.insertMany([
+      {name: "epken", content:""},
+      {name: "epkheb", content: ""}
+    ]);
+    console.log("Found no content in for the EPK page and created the default data");
+  } else {
+    console.log("No Need to create default content for the EPK page");
+  }
+});
+
 //main variable for language
 
 let lang = "he";
@@ -167,9 +211,9 @@ let loggedInUser = "";
 
 let activePage = [];
 
-const editpageHeb = ["mhe", "nhe", "omhe", "she","suhe","fhe","auhe"];
+const editPageHeb = ["mhe", "nhe", "omhe", "she","suhe","fhe","auhe"];
 
-const editpageEng = ["men", "nen", "omen", "sen","suen","fen","auen"];
+const editPageEng = ["men", "nen", "omen", "sen","suen","fen","auen"];
 
 const mainPageHeb = ["mhe", "nhe", "omhe", "she"];
 
@@ -203,55 +247,51 @@ function findContent(itemsToFind) {
 
 // main page rendering
 
-app.get("/", function (req, res) {
+app.get("/", async function (req, res) {
   activePage = [];
   activePage[0] = "active";
   if (lang === "en") {
-    let query = findContent(mainPageEng);
-    query.exec(function (err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/failed");
-      } else {
-        res.render('main', {
-          lang: lang,
-          loggedInUser: loggedInUser,
-          activePage: activePage,
-          // section content
-          //main section content
-          main: foundContent[0],
-          //newsletter content
-          news: foundContent[1],
-          //our music content
-          ourmusic: foundContent[2],
-          //shows content
-          shows: foundContent[3]
-        });
-      }
-    });
+    let mainPageEngCont = await findContent(mainPageEng);
+    if (mainPageEngCont) {
+      res.render('main', {
+        lang: lang,
+        loggedInUser: loggedInUser,
+        activePage: activePage,
+        // section content
+        //main section content
+        main: mainPageEngCont[0],
+        //newsletter content
+        news: mainPageEngCont[1],
+        //our music content
+        ourmusic: mainPageEngCont[2],
+        //shows content
+        shows: mainPageEngCont[3]
+      });
+    } else {
+      console.log(err);
+      res.redirect("/failed");
+    }
   } else {
-    let query = findContent(mainPageHeb);
-    query.exec(function (err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/failed");
-      } else {
-        res.render('main', {
-          lang: lang,
-          loggedInUser: loggedInUser,
-          activePage: activePage,
-          // section content
-          //main section content
-          main: foundContent[0],
-          //newsletter content
-          news: foundContent[1],
-          //our music content
-          ourmusic: foundContent[2],
-          //shows content
-          shows: foundContent[3]
-        });
-      }
-    });
+    let mainPageHebCont = await findContent(mainPageHeb);
+    if (mainPageHebCont) {
+      res.render('main', {
+        lang: lang,
+        loggedInUser: loggedInUser,
+        activePage: activePage,
+        // section content
+        //main section content
+        main: mainPageHebCont[0],
+        //newsletter content
+        news: mainPageHebCont[1],
+        //our music content
+        ourmusic: mainPageHebCont[2],
+        //shows content
+        shows: mainPageHebCont[3]
+      });
+    } else {
+      console.log(err);
+      res.redirect("/failed");
+    }
   }
 });
 
@@ -262,7 +302,7 @@ app.post("/login", function (req, res) {
     username: req.body.username,
     password: req.body.password,
   });
-
+  
   req.login(user, function (err) {
     if (err) {
       console.log(err);
@@ -387,172 +427,160 @@ app.post("/contact", function (req, res) {
 
 // about page rendering
 
-app.get("/about", function (req, res) {
+app.get("/about", async function (req, res) {
   activePage = [];
   activePage[2] ="active";
 
   if (lang === "en") {
-    let query = findContent(aboutPageEng);
-    query.exec(function (err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/failed");
-      } else {
-        res.render("about", {
-          activePage: activePage,
-          lang: lang,
-          loggedInUser: loggedInUser,
-          aboutus: foundContent
-        });  
-      }
-    });    
+    let aboutPageEngCont = await findContent(aboutPageEng);
+    if (aboutPageEngCont) {
+      res.render("about", {
+        activePage: activePage,
+        lang: lang,
+        loggedInUser: loggedInUser,
+        aboutus: aboutPageEngCont
+      });
+    } else {
+      console.log(err);
+      res.redirect("/failed");
+    }
   } else {
-    let query = findContent(aboutPageHeb);
-    query.exec(function (err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/failed");
-      } else {
-        res.render("about", {
-          activePage: activePage,
-          lang: lang,
-          loggedInUser: loggedInUser,
-          aboutus: foundContent
-        });  
-      }
-    });
+   let aboutPageHebCont = await findContent (aboutPageHeb);
+    if (aboutPageHebCont) {
+      res.render("about", {
+        activePage: activePage,
+        lang: lang,
+        loggedInUser: loggedInUser,
+        aboutus: aboutPageHebCont
+      });  
+    } else {
+      console.log(err);
+      res.redirect("/failed");
+    }   
   }
 });
 
 
 //sucess page rendering
 
-app.get('/success', function (req, res) {
+app.get('/success', async function (req, res) {
   activePage = [];
 
   // finding the specific title I'm looking for and showing it in the page
 
   if (lang === "en") {
-    let query = findContent(successPageEng);
-    query.exec(function (err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/failed");
-      } else {
-        res.render('success', {
-          activePage: activePage,
-          lang: lang,
-          loggedInUser: loggedInUser,
-          success: foundContent
-        });
-      }
-    });
+    let successPageEngCont = await findContent(successPageEng);
+    if (successPageEngCont) {
+      res.render('success', {
+        activePage: activePage,
+        lang: lang,
+        loggedInUser: loggedInUser,
+        success: successPageEngCont
+      });
+    } else {
+      console.log(err);
+      res.redirect("/failed");
+    }
   } else {
-    let query = findContent(successPageHeb);
-    query.exec(function (err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/failed");
-      } else {
-        res.render('success', {
-          activePage: activePage,
-          lang: lang,
-          loggedInUser: loggedInUser,
-          success: foundContent
-        });
-      }
-    });
+    let successPageHebCont = await findContent(successPageHeb);
+    if (successPageHebCont) {
+      res.render('success', {
+        activePage: activePage,
+        lang: lang,
+        loggedInUser: loggedInUser,
+        success: successPageHebCont
+      });
+    } else {
+      console.log(err);
+      res.redirect("/failed");
+    }
   }
 });
 
 //failed page rendring
 
-app.get('/failed', function (req, res) {
+app.get('/failed', async function (req, res) {
   activePage = [];
-
   if (lang === "en") {
-    let query = findContent(failedPageEng);
-    query.exec(function(err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/");
-      } else {
-        res.render('failed', {
-          activePage: activePage,
-          lang: lang,
-          loggedInUser: loggedInUser,
-          failed: foundContent
-        });
-      }
-    });
+    let failedPageEngCont = await findContent(failedPageEng);
+    if (failedPageEngCont) {
+      console.log(failedPageEngCont);
+      res.render('failed', {
+        activePage: activePage,
+        lang: lang,
+        loggedInUser: loggedInUser,
+        failed: failedPageEngCont
+      });
+    } else {
+      console.log(err);
+      res.redirect("/");
+    }
   } else {
-    let query = findContent(failedPageHeb);
-    query.exec(function(err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/");
-      } else {
+    let failedPageHebCont = await findContent(failedPageHeb);
+      if (failedPageHebCont) {
         res.render('failed', {
-          activePage: activePage,
-          lang: lang,
-          loggedInUser: loggedInUser,
-          failed: foundContent
-        });
-      }
-    });
+        activePage: activePage,
+        lang: lang,
+        loggedInUser: loggedInUser,
+        failed: failedPageHebCont
+      });
+    } else {
+      console.log(err);
+      res.redirect("/");
+    }
   }
 });
 
 // edit page rendering
 
 
-app.get("/edit", function (req, res) {
+app.get("/edit", async function (req, res) {
   if (req.isAuthenticated()) {
     if (req.user.username === process.env.ADMIN) {
       activePage = [];
       activePage[4] = "active";
       if (lang === "en") {
-        let query = findContent(editpageEng);
-        query.exec(function (err, foundContent) {
-          if (err) {
-            console.log(err);
-            res.redirect("/failed");
-          } else {
-            res.render('edit', {
-              activePage: activePage,
-              lang: lang,
-              loggedInUser: loggedInUser,
-              main: foundContent[0],
-              news: foundContent[1],
-              ourmusic: foundContent[2],
-              shows: foundContent[3],
-              success: foundContent[4],
-              failed: foundContent[5],
-              aboutus: foundContent[6]
-            });
-          }
-        });
+        let editPageMainEngCont = await findContent(editPageEng);
+        let editEpkEngCont = await Epk.findOne({name: "epken"});
+        if (editPageMainEngCont) {
+          res.render('edit', {
+            activePage: activePage,
+            lang: lang,
+            loggedInUser: loggedInUser,
+            main: editPageMainEngCont[0],
+            news: editPageMainEngCont[1],
+            ourmusic: editPageMainEngCont[2],
+            shows: editPageMainEngCont[3],
+            success: editPageMainEngCont[4],
+            failed: editPageMainEngCont[5],
+            aboutus: editPageMainEngCont[6],
+            epkcont: editEpkEngCont
+          });
+        } else {
+          console.log(err);
+          res.redirect("/failed");
+        }
       } else {
-        let query = findContent(editpageHeb);
-        query.exec(function(err, foundContent) {
-          if (err) {
-            console.log(err);
-            res.redirect("/failed")
-          } else {
-            res.render('edit', {
-              activePage: activePage,
-              lang: lang,
-              loggedInUser: loggedInUser,
-              main: foundContent[0],
-              news: foundContent[1],
-              ourmusic: foundContent[2],
-              shows: foundContent[3],
-              success: foundContent[4],
-              failed: foundContent[5],
-              aboutus: foundContent[6]
-            });
-          }
-        });
+        let editPageMainHebCont = await findContent(editPageHeb);
+        let editEpkHebCont = await Epk.findOne({name: "epkheb"});
+        if (editPageMainHebCont) {
+          res.render('edit', {
+            activePage: activePage,
+            lang: lang,
+            loggedInUser: loggedInUser,
+            main: editPageMainHebCont[0],
+            news: editPageMainHebCont[1],
+            ourmusic: editPageMainHebCont[2],
+            shows: editPageMainHebCont[3],
+            success: editPageMainHebCont[4],
+            failed: editPageMainHebCont[5],
+            aboutus: editPageMainHebCont[6],
+            epkcont: editEpkHebCont
+          });
+        } else {
+          console.log(err);
+          res.redirect("/failed")
+        }
       }
     } else {
       res.redirect("/failed");
@@ -563,13 +591,14 @@ app.get("/edit", function (req, res) {
 
 // edit page update the database function
 
+// save button function
 app.post("/save", function(req, res){  
- 
+
 //get current fields data & update last modified fields
 
 if (lang === "en") {
-  Content.find({
-    name: { $in: ["men", "nen", "omen", "sen", "suen", "fen", "auen"]}
+   Content.find({
+    name: { $in: editPageEng }
    }, function (err, foundContent) {
     if (err) {
       console.log(err);
@@ -718,10 +747,17 @@ if (lang === "en") {
       });
     }
     });
+    Epk.updateOne({name: "epken"},{content: req.body.EPK}, function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("successfully updated epk content");
+      }
+    });
 } else {
   //find Hebrew values and update them
   Content.find({
-    name: { $in: ["mhe", "nhe", "omhe", "she", "suhe", "fhe", "auhe"]}
+    name: { $in: editPageHeb }
    }, function (err, foundContent) {
     if (err) {
       console.log(err);
@@ -869,6 +905,13 @@ if (lang === "en") {
         }
       });
     }
+    });
+    Epk.updateOne({name: "epkheb"},{content: req.body.EPK}, function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("successfully updated epk content");
+      }
     });
 }
 });
@@ -1228,17 +1271,35 @@ app.post("/default", function(req, res){
 
 // epk page rendering
 
-app.get("/epk", function (req, res) {
+app.get("/epk", async function (req, res) {
   if (req.isAuthenticated()) {
     activePage = [];
     activePage[3] = "active";
-    res.render("epk", {
-      activePage: activePage,
-      lang: lang,
-      loggedInUser: loggedInUser
-    });
-  } else {
-    res.redirect("/failed");
+    if (lang === "en") {
+      let epkEngCont = await Epk.findOne({name: "epken"});
+    if (epkEngCont) {
+      res.render("epk", {
+        activePage: activePage,
+        lang: lang,
+        loggedInUser: loggedInUser,
+        epkcont: epkEngCont
+      });
+    } else {
+      res.redirect("/failed");
+    }
+    } else {
+      let epkHebCont = await Epk.findOne({name: "epkheb"});
+      if (epkHebCont) {
+        res.render("epk", {
+          activePage: activePage,
+          lang: lang,
+          loggedInUser: loggedInUser,
+          epkcont: epkHebCont
+        });
+      } else {
+        res.redirect("/failed");
+      }
+    }
   }
 });
 
