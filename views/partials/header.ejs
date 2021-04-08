@@ -23,7 +23,23 @@
   <% } else { %>
   <link rel="stylesheet" href="css/styles.css">
   <% } %> 
-
+  <!-- calling tinymce and initilzing it with the relevant plugins -->
+  <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+  <script>
+  tinymce.init({
+    selector: '#mytextarea',
+    min_height: 600,
+    width:'100%',
+    menubar: true,
+     directionality : 'rtl',
+    plugins: [
+      'advlist autolink lists link image charmap print preview anchor',
+      'searchreplace visualblocks code fullscreen',
+      'insertdatetime media table paste code wordcount'
+    ],
+    toolbar: 'insert | undo redo |  formatselect | bold italic backcolor | fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | media',
+    paste_data_images: true});
+    </script>
 </head>
 
 <body>
