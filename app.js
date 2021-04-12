@@ -12,17 +12,26 @@ const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 
+
 const app = express();
 
 // multer initialization
 
+// defining the storage place for the images
 const storage = multer.diskStorage({
+  //destination for the files
   destination: (req, file, cb) => {
-    cb(null, 'uploads')
+    cb(null, './public/uploads/images');
   },
+  //defining how the files will be named
   filename: (req, file, cb) => {
-    cb(null, file.filedname + '-' + Date.now())
-  }
+    cb(null, Date.now() + file.originalname);
+  },
+});
+
+//upload parameters for multer
+const upload = multer({
+  storage: storage
 });
 
 //node mailer initialization
@@ -102,13 +111,7 @@ const contentSchema = new mongoose.Schema({
 });
 
 const imageSchema = new mongoose.Schema({
-  name: String,
-  desc: String,
-  img: 
-  {
-    data: Buffer,
-    contentType: String
-  }
+  img: String
 });
 
 
@@ -138,7 +141,7 @@ passport.deserializeUser(User.deserializeUser());
 Content.find({ }, function (err, foundContent) {
   if (foundContent.length === 0) {
     Content.insertMany([
-{ name: "mdhe", title: "אנחנו דוגהאוס!", paragraph: "אנחנו להקת רוק שאוהבת לעשות שטויות כמו לכתוב טקסט שממלא חלקים באתר!", link: "https://www.youtube.com/embed/Et4DdBYj7vg"},
+{ name: "mdhe", title: "אנחנו דוגהאוס!", paragraph: "אנחנו להקת רוק שאוהבת לעשות שטויות כמו לכתוב טקסט שממלא חלקים באתר!", link: "https://www.youtube.com/embed/Et4DdBYj7vg", link1: "#", link2: "#", link3: "#"},
 { name: "ndhe", title: "רוצים להיות תמיד מעודכנים? הרשמו לניוזלטר שלנו"},
 { name: "omdhe", title: "המוזיקה שלנו", link:"https://www.youtube.com/embed/videoseries?list=PLU5G0w5zZI6IgNqgWMdoaAwrwDnv9EUx7", link1:"https://open.spotify.com/embed/playlist/03LxLFhUbx4VzUyFUXy34A"},
 { name: "sdhe", title: "הופעות קרובות", paragraph: "הופעה בלבונטין בתאריך ככה ובשעה ככה", paragraph1: "הופעה במאדים בתאריך שכזה ושעה שכזו", paragraph2: "הופעה שהיא הופעה שכזו וכאלה", paragraph3: "הופעה משותפת עם החתולים הסמוראיים", paragraph4: "סיבוב הופעות מסביב לעולם ב 80 יום", link:"#", link1:"#", link2:"#", link3:"#", link4:"#"},
@@ -152,14 +155,14 @@ Content.find({ }, function (err, foundContent) {
 { name: "suhel", title: ""},
 { name: "fhel", title: "", paragraph: ""},
 { name: "auhel", title: "", paragraph:""},
-{ name: "mhe", title: "אנחנו דוגהאוס!", paragraph: "אנחנו להקת רוק שאוהבת לעשות שטויות כמו לכתוב טקסט שממלא חלקים באתר!", link: "https://www.youtube.com/embed/Et4DdBYj7vg"},
+{ name: "mhe", title: "אנחנו דוגהאוס!", paragraph: "אנחנו להקת רוק שאוהבת לעשות שטויות כמו לכתוב טקסט שממלא חלקים באתר!", link: "https://www.youtube.com/embed/Et4DdBYj7vg", link1: "#", link2: "#", link3: "#"},
 { name: "nhe",  title: "רוצים להיות תמיד מעודכנים? הרשמו לניוזלטר שלנו"},
 { name: "omhe", title: "המוזיקה שלנו", link:"https://www.youtube.com/embed/videoseries?list=PLU5G0w5zZI6IgNqgWMdoaAwrwDnv9EUx7", link1:"https://open.spotify.com/embed/playlist/03LxLFhUbx4VzUyFUXy34A"},
 { name: "she", title: "הופעות קרובות", paragraph: "הופעה בלבונטין בתאריך ככה ובשעה ככה", paragraph1: "הופעה במאדים בתאריך שכזה ושעה שכזו", paragraph2: "הופעה שהיא הופעה שכזו וכאלה", paragraph3: "הופעה משותפת עם החתולים הסמוראיים", paragraph4: "סיבוב הופעות מסביב לעולם ב 80 יום", link:"#", link1:"#", link2:"#", link3:"#", link4:"#"},
 { name: "suhe", title: "בקשתך התקבלה בהצלחה"},
 { name: "fhe", title: "משהו השתבש...", paragraph: "נראה שמשהו השתבש ובקשתך לא התקבלה. אנא נסה שנית מאוחר יותר"},
 { name: "auhe", title: "אז מי אנחנו בכלל?", paragraph:"משהו על זה שאנחנו חברים מהמרכז שהחליטו להקים להקה וכדומה"},
-{ name : "mden", title : "We are DogHouse!", "paragraph" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas et sollicitudin massa.", link: "https://www.youtube.com/embed/Et4DdBYj7vg"},
+{ name : "mden", title : "We are DogHouse!", "paragraph" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas et sollicitudin massa.", link: "https://www.youtube.com/embed/Et4DdBYj7vg", link1: "#", link2: "#", link3: "#"},
 { name : "nden", title : "Want to stay updated? Sign up for our newsletter"},
 { name : "omden", title : "Our Music", link:"https://www.youtube.com/embed/videoseries?list=PLU5G0w5zZI6IgNqgWMdoaAwrwDnv9EUx7", link1:"https://open.spotify.com/embed/playlist/03LxLFhUbx4VzUyFUXy34A"},
 { name : "sden", title : "Upcoming Shows", "paragraph" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph1" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph2" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph3" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph4" : "Lorem ipsum dolor sit amet, consectetur.", "link" : "#", "link1" : "#", "link2" : "#", "link3" : "#", "link4" : "#"},
@@ -173,7 +176,7 @@ Content.find({ }, function (err, foundContent) {
 { name : "suenl", title : ""},
 { name : "fenl", title : "", "paragraph" : ""},
 { name : "auenl", title : "", "paragraph" : ""},
-{ name : "men", title : "We are DogHouse!", "paragraph" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas et sollicitudin massa.", link: "https://www.youtube.com/embed/Et4DdBYj7vg"},
+{ name : "men", title : "We are DogHouse!", "paragraph" : "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas et sollicitudin massa.", link: "https://www.youtube.com/embed/Et4DdBYj7vg", link1: "#", link2: "#", link3: "#"},
 { name : "nen", title : "Want to stay updated? Sign up for our newsletter"},
 { name : "omen", title : "Our Music", link:"https://www.youtube.com/embed/videoseries?list=PLU5G0w5zZI6IgNqgWMdoaAwrwDnv9EUx7", link1:"https://open.spotify.com/embed/playlist/03LxLFhUbx4VzUyFUXy34A"},
 { name : "sen", title : "Upcoming Shows", "paragraph" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph1" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph2" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph3" : "Lorem ipsum dolor sit amet, consectetur.", "paragraph4" : "Lorem ipsum dolor sit amet, consectetur.", "link" : "#", "link1" : "#", "link2" : "#", "link3" : "#", "link4" : "#"},
@@ -181,11 +184,36 @@ Content.find({ }, function (err, foundContent) {
 { name : "fen", title : "Something went wrong", "paragraph" : "Please try again later"},
 { name : "auen", title : "About Us", "paragraph" : ""}
     ]);
-    console.log("Found no data in the DB and created the default data");
+    console.log("Found no data in the DB and created the default data.");
   } else {
-    console.log("No need to create default content, you are good to go :)");
+    console.log("No need to create default content.");
   }
 });
+
+// Create default users if needed
+
+User.find({}, function (err, foundUsers) {
+  if (foundUsers.length === 0) {
+    User.insertMany([
+      {
+        "username" : process.env.ADMIN,
+        "salt" : proccess.env.ADMIN_SALT,
+        "hash" : proccess.env.ADMIN_HASH
+      },
+      {
+        "username" : proccess.env.EPK,
+        "salt" : proccess.env.EPK_SALT,
+        "hash" : proccess.env.EPK_HASH
+      }
+    ]);
+    console.log("Found no users in the DB and created the default ones.");
+  } else {
+    console.log("No need to create default users.");
+  }
+})
+
+
+// create EPK data if needed
 
 Epk.find({}, function (err, foundEpk) {
   if (foundEpk.length === 0) {
@@ -193,9 +221,9 @@ Epk.find({}, function (err, foundEpk) {
       {name: "epken", content:""},
       {name: "epkheb", content: ""}
     ]);
-    console.log("Found no content in for the EPK page and created the default data");
+    console.log("Found no content in for the EPK page and created the default data.");
   } else {
-    console.log("No Need to create default content for the EPK page");
+    console.log("No need to create default content for the EPK page.");
   }
 });
 
@@ -231,6 +259,7 @@ const failedPageHeb = ["fhe"];
 
 const failedPageEng = ["fen"];
 
+
 function findContent(itemsToFind) {
   if (itemsToFind.length === 1) {
     let dataFound = Content.findOne({
@@ -250,6 +279,7 @@ function findContent(itemsToFind) {
 app.get("/", async function (req, res) {
   activePage = [];
   activePage[0] = "active";
+  let images = await Image.find({});
   if (lang === "en") {
     let mainPageEngCont = await findContent(mainPageEng);
     if (mainPageEngCont) {
@@ -265,7 +295,8 @@ app.get("/", async function (req, res) {
         //our music content
         ourmusic: mainPageEngCont[2],
         //shows content
-        shows: mainPageEngCont[3]
+        shows: mainPageEngCont[3],
+        images: images
       });
     } else {
       console.log(err);
@@ -286,7 +317,8 @@ app.get("/", async function (req, res) {
         //our music content
         ourmusic: mainPageHebCont[2],
         //shows content
-        shows: mainPageHebCont[3]
+        shows: mainPageHebCont[3],
+        images: images
       });
     } else {
       console.log(err);
@@ -539,6 +571,7 @@ app.get("/edit", async function (req, res) {
     if (req.user.username === process.env.ADMIN) {
       activePage = [];
       activePage[4] = "active";
+      let images = await Image.find({});
       if (lang === "en") {
         let editPageMainEngCont = await findContent(editPageEng);
         let editEpkEngCont = await Epk.findOne({name: "epken"});
@@ -554,7 +587,8 @@ app.get("/edit", async function (req, res) {
             success: editPageMainEngCont[4],
             failed: editPageMainEngCont[5],
             aboutus: editPageMainEngCont[6],
-            epkcont: editEpkEngCont
+            epkcont: editEpkEngCont,
+            images: images
           });
         } else {
           console.log(err);
@@ -575,7 +609,8 @@ app.get("/edit", async function (req, res) {
             success: editPageMainHebCont[4],
             failed: editPageMainHebCont[5],
             aboutus: editPageMainHebCont[6],
-            epkcont: editEpkHebCont
+            epkcont: editEpkHebCont,
+            images: images
           });
         } else {
           console.log(err);
@@ -592,7 +627,7 @@ app.get("/edit", async function (req, res) {
 // edit page update the database function
 
 // save button function
-app.post("/save", function(req, res){  
+app.post("/save", upload.single('image') ,function(req, res){  
 
 //get current fields data & update last modified fields
 
@@ -604,6 +639,7 @@ if (lang === "en") {
       console.log(err);
       res.redirect("/failed");
     } else {
+      console.log(req.body.successTitle);
       Content.bulkWrite([
         { updateOne:
           {
@@ -611,7 +647,10 @@ if (lang === "en") {
             "update": {
               "title": foundContent[0].title,
               "paragraph": foundContent[0].paragraph,
-              "link": foundContent[0].link
+              "link": foundContent[0].link,
+              "link1": foundContent[0].link1,
+              "link2": foundContent[0].link2,
+              "link3": foundContent[0].link3
             }
           }
         }, {
@@ -678,7 +717,10 @@ if (lang === "en") {
             "update": {
               "title": req.body.mainTitle,
               "paragraph": req.body.mainPara,
-              "link": req.body.mainLink
+              "link": req.body.mainLink,
+              "link1": req.body.mainLink1,
+              "link2": req.body.mainLink2,
+              "link3": req.body.mainLink3
             }
           }
           }, {
@@ -747,11 +789,16 @@ if (lang === "en") {
       });
     }
     });
+    try {
+      Image.create({img: req.file.filename});
+    } catch (error) {
+      console.log("No Image was selected");
+    }
     Epk.updateOne({name: "epken"},{content: req.body.EPK}, function(err) {
       if (err) {
         console.log(err);
       } else {
-        console.log("successfully updated epk content");
+        console.log("Successfully updated epk content.");
       }
     });
 } else {
@@ -770,7 +817,10 @@ if (lang === "en") {
             "update": {
               "title": foundContent[0].title,
               "paragraph": foundContent[0].paragraph,
-              "link": foundContent[0].link
+              "link": foundContent[0].link,
+              "link1": foundContent[0].link1,
+              "link2": foundContent[0].link2,
+              "link3": foundContent[0].link3
             }
           }
         }, {
@@ -837,7 +887,10 @@ if (lang === "en") {
             "update": {
               "title": req.body.mainTitle,
               "paragraph": req.body.mainPara,
-              "link": req.body.mainLink
+              "link": req.body.mainLink,
+              "link1": req.body.mainLink1,
+              "link2": req.body.mainLink2,
+              "link3": req.body.mainLink3
             }
           }
           }, {
@@ -906,6 +959,11 @@ if (lang === "en") {
       });
     }
     });
+    try {
+      Image.create({img: req.file.filename});
+    } catch (error) {
+      console.log("No Image was selected");
+    }
     Epk.updateOne({name: "epkheb"},{content: req.body.EPK}, function(err) {
       if (err) {
         console.log(err);
@@ -934,7 +992,10 @@ app.post("/lastmod", function (req, res){
               "update": {
                 "title": foundContent[0].title,
                 "paragraph": foundContent[0].paragraph,
-                "link": foundContent[0].link
+                "link": foundContent[0].link,
+                "link1": foundContent[0].link1,
+                "link2": foundContent[0].link2,
+                "link3": foundContent[0].link3
               }
             }
           }, {
@@ -1019,7 +1080,10 @@ app.post("/lastmod", function (req, res){
               "update": {
                 "title": foundContent[0].title,
                 "paragraph": foundContent[0].paragraph,
-                "link": foundContent[0].link
+                "link": foundContent[0].link,
+                "link1": foundContent[0].link1,
+                "link2": foundContent[0].link2,
+                "link3": foundContent[0].link3
               }
             }
           }, {
@@ -1111,7 +1175,10 @@ app.post("/default", function(req, res){
               "update": {
                 "title": foundContent[0].title,
                 "paragraph": foundContent[0].paragraph,
-                "link": foundContent[0].link
+                "link": foundContent[0].link,
+                "link1": foundContent[0].link1,
+                "link2": foundContent[0].link2,
+                "link3": foundContent[0].link3
               }
             }
           }, {
@@ -1196,7 +1263,10 @@ app.post("/default", function(req, res){
               "update": {
                 "title": foundContent[0].title,
                 "paragraph": foundContent[0].paragraph,
-                "link": foundContent[0].link
+                "link": foundContent[0].link,
+                "link1": foundContent[0].link1,
+                "link2": foundContent[0].link2,
+                "link3": foundContent[0].link3
               }
             }
           }, {
@@ -1269,6 +1339,29 @@ app.post("/default", function(req, res){
   }
 });
 
+
+// delete images function
+app.post("/deleteimage", function(req, res) {
+  chosenImageName = req.body.imagechosen;
+  imagePath = './public/uploads/images/' + chosenImageName 
+  Image.deleteOne({ 
+    img: chosenImageName 
+  }, function(err){
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Successfully deleted the image from the DB");
+    }
+  });
+  try {
+    fs.unlinkSync(imagePath);
+    console.log("Successfully deleted the image from the server");
+  } catch (error) {
+    console.log(error);
+  }
+  res.redirect("/edit");
+});
+
 // epk page rendering
 
 app.get("/epk", async function (req, res) {
@@ -1313,5 +1406,5 @@ app.post("/logout", function (req, res) {
 });
 
 app.listen(3000, function () {
-  console.log("Server started successfully on port 3000");
+  console.log("Server started successfully on port 3000.");
 });

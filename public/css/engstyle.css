@@ -125,7 +125,7 @@ h1 {
 }
 
 .show-image {
-  width: 90%;
+  width: 80%;
   margin: 5%;
   border-radius: 5px;
 }
@@ -215,6 +215,10 @@ h1 {
 
 .edit-title{
   margin-top: 0.5%;
+}
+
+.edit-image {
+  width: 15%;
 }
 
 /* max-width: 575px */

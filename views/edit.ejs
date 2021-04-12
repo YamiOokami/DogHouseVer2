@@ -6,7 +6,7 @@
     <section id="edit">
         <h1 class="edit-title">Edit the website</h1>    
             <% if (lang === "en") { %>
-                <form action="/save" method="post">
+                <form action="/save" method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-lg-4">
                         <h3>Link to music video</h3>
@@ -99,6 +99,12 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
+                        <h3>Upload images for the show section</h3>
+                        <input type="file" name="image">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
                         <h3>Success Title</h3>
                         <textarea name="successTitle" cols="80" rows="1"><%= success.title %></textarea>
                     </div>
@@ -146,8 +152,27 @@
                         <button type="submit" class="btn btn-warning">Restore to last modified data</button>
                         </form>
                     </div>
+                </div>
+                <br>
+                <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h3>Delete images from the show section</h3>
+                        </div>
+                    </div>
+                          <% images.forEach(function(image){ %>
+                            <form action="/deleteimage" method="POST">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                    <img class="edit-image" src="uploads/images/<%= image.img %> " alt="Image">
+                                    <button type="submit" class="btn btn-danger">Delete Image</button>
+                                    <input type="hidden" name="imagechosen" value="<%= image.img %>">
+                                    </div>
+                                </div>
+                            </form>
+                                 <% }) %> 
             <% } else { %>
-        <form action="/save" method="post"> 
+        <form action="/save" method="post" enctype="multipart/form-data"> 
         <div class="row">
             <div class="col-lg-4">
                 <h3>Main Paragraph</h3>
@@ -240,6 +265,12 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
+                <h3>Upload images for the show section</h3>
+                <input type="file" name="image">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
                 <h3>Success Title</h3>
                 <textarea name="successTitle" cols="80" rows="1"><%= success.title %></textarea>
             </div>
@@ -287,6 +318,25 @@
                 <button type="submit" class="btn btn-danger">Restore to default values</button>
                 </form>
             </div>
+        </div>
+            <br>
+            <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3>Delete images from the show section</h3>
+                    </div>
+                </div>
+                      <% images.forEach(function(image){ %>
+                        <form action="/deleteimage" method="POST">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                <button type="submit" class="btn btn-danger">Delete Image</button>
+                                <img class="edit-image" src="uploads/images/<%= image.img %>" alt="Image">
+                                <input type="hidden" name="imagechosen" value="<%= image.img %>">
+                                </div>
+                            </div>
+                        </form>
+                             <% }) %> 
                 <% } %> 
     </section>
 </div>

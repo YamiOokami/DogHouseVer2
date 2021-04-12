@@ -211,6 +211,10 @@ h1 {
   margin-top: 0.5%;
 }
 
+.edit-image {
+  width: 15%;
+}
+
 /* max-width: 575px */
 
 @media (max-width: 601px) {
