@@ -221,6 +221,16 @@ h1 {
   width: 15%;
 }
 
+.edit-border {
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-top: 1%;
+}
+
+#edit h3 {
+  margin-top: 0.5%;
+}
+
 /* max-width: 575px */
 
 @media (max-width: 601px) {

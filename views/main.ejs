@@ -7,13 +7,13 @@
     <h1><%= main.title %></h1>
     <h3 class="description"><%= main.paragraph %></h3>
     <% if (lang === "en") { %>
-      <button type="button" class="btn btn-danger btn-md header-button"><i class="fab fa-youtube"></i><a href="#"> Follow us on YouTube</a></button>
-      <button type="button" class="btn btn-md  btn-instagram header-button"><i class="fab fa-instagram"></i><a href="#"> Follow us on Instegram</a></button>
-      <button type="button" class="btn btn-md  btn-facebook header-button"><i class="fab fa-facebook"></i><a href="#"> Follow us on Facebook</a></button>  
+      <button type="button" class="btn btn-danger btn-md header-button"><i class="fab fa-youtube"></i><a href=<%= main.link1 %> > Follow us on YouTube</a></button>
+      <button type="button" class="btn btn-md  btn-instagram header-button"><i class="fab fa-instagram"></i><a href=<%= main.link2 %> > Follow us on Instegram</a></button>
+      <button type="button" class="btn btn-md  btn-facebook header-button"><i class="fab fa-facebook"></i><a href=<%= main.link3 %> > Follow us on Facebook</a></button>  
     <% } else { %>
-    <button type="button" class="btn btn-danger btn-md header-button"><i class="fab fa-youtube"></i><a href="#"> עקבו אחרינו ביוטוב</a></button>
-    <button type="button" class="btn btn-md  btn-instagram header-button"><i class="fab fa-instagram"></i><a href="#"> עקבו אחרינו באינסטגרם</a></button>
-    <button type="button" class="btn btn-md  btn-facebook header-button"><i class="fab fa-facebook"></i><a href="#"> עקבו אחרינו בפייסבוק</a></button>
+    <button type="button" class="btn btn-danger btn-md header-button"><i class="fab fa-youtube"></i><a href=<%= main.link1 %> > עקבו אחרינו ביוטוב</a></button>
+    <button type="button" class="btn btn-md  btn-instagram header-button"><i class="fab fa-instagram"></i><a href=<%= main.link2 %> > עקבו אחרינו באינסטגרם</a></button>
+    <button type="button" class="btn btn-md  btn-facebook header-button"><i class="fab fa-facebook"></i><a href=<%= main.link3 %> > עקבו אחרינו בפייסבוק</a></button>
     <% } %> 
     <br>
     <button type="button" class="btn btn-dark btn-lg header-button" id="ourmusic-btn"><a href="#ourmusic"> <%= ourmusic.title %> </a></button>

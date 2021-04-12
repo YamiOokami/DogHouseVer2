@@ -62,7 +62,7 @@
               <% if (loggedInUser === "admin" || loggedInUser === "epk") { %>
                <li class="navbar-item">
                  <form action="/logout" method="post">
-                  <button type="submit" class="btn btn-danger" name="logout">Log Out</button>
+                  <button type="submit" class="btn btn-sm btn-danger" name="logout">Log Out</button>
                 </form>
                </li>
                <% if (loggedInUser === "admin") { %>
@@ -118,7 +118,7 @@
             <% if (loggedInUser === "admin" || loggedInUser === "epk") { %>
               <li class="nav-item">
                 <form action="/logout" method="post">
-                 <button type="submit" class="btn btn-danger" name="logout">התנתק</button>
+                 <button type="submit" class="btn btn-sm btn-danger" name="logout">התנתק</button>
                </form>
               </li>
               <% if (loggedInUser === "admin") { %>
