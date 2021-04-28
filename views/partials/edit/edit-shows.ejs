@@ -1,0 +1,181 @@
+<% if (lang === "en") { %>
+<div class="border rounded edit-border">
+    <h3>Shows Section</h3>
+    <div class="dropdown-divider"></div>
+    <div class="row justify-content-center">
+        <label class="col-lg-1.5 col-form-label-sm">Shows Title</label>
+        <div class="col-lg-3">
+            <input type="text" name="showsTitle" class="form-control form-control-sm" value="<%= shows.title %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <label class="form-label">Shows first paragraph</label>
+            <input type="text" name="showsPara" class="form-control form-control-sm" value="<%= shows.paragraph %>">
+        </div>
+        <div class="col-lg-6">
+            <label class="form-label">Shows first link</label>
+            <input type="text" name="showsLink" class="form-control form-control-sm" value="<%= shows.link %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+           <label class="form-label">Shows second paragraph</label>
+           <input type="text" name="showsPara1" class="form-control form-control-sm" value="<%= shows.paragraph1 %>">
+        </div>
+        <div class="col-lg-6">
+           <label class="form-label">Shows second link</label>
+           <input type="text" name="showsLink1" class="form-control form-control-sm" value="<%= shows.link1 %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+           <label class="form-label">Shows third paragraph</label>
+           <input type="text" name="showsPara2" class="form-control form-control-sm" value="<%= shows.paragraph2 %>">
+        </div>
+        <div class="col-lg-6">
+           <label class="form-label">Shows third link</label>
+           <input type="text" name="showsLink2" class="form-control form-control-sm" value="<%= shows.link2 %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+           <label class="form-label">Shows forth paragraph</label>
+           <input type="text" name="showsPara3" class="form-control form-control-sm" value="<%= shows.paragraph3 %>">
+        </div>
+        <div class="col-lg-6">
+           <label class="form-label">Shows forth link</label>
+           <input type="text" name="showsLink3" class="form-control form-control-sm" value="<%= shows.link3 %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <label class="form-label">Shows fifth paragraph</label>
+            <input type="text" name="showsPara4" class="form-control form-control-sm" value="<%= shows.paragraph4 %>">
+        </div>
+        <div class="col-lg-6">
+            <label class="form-label">Shows fifth link</label>
+            <input type="text" name="showsLink4" class="form-control form-control-sm" value="<%= shows.link4 %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-1.5">
+            <button type="submit" class="btn btn-success btn-md" form="saveForm">Save Changes</button>
+        </div>
+    </div>
+    <div class="dropdown-divider"></div>
+    <div class="row justify-content-center">
+        <div class="col-lg-3">
+            <label class="form-label">Upload images to the shows section</label>
+            <div class="input-group">
+                <input type="file" name="image" class="form-control">
+                <button class="btn btn-outline-success" type="submit" form="saveForm">Upload</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="dropdown-divider"></div>
+<% images.forEach(function(image){ %>
+    <form action="/deleteimage" method="POST">
+        <div class="row justify-content-center">
+            <label class="form-label"> Delete Images from the shows section</label>
+            <div class="col-lg-12">
+                <img class="edit-image" src="uploads/images/<%= image.img %> " alt="Image">
+                <button type="submit" class="btn btn-outline-danger">Delete Image</button>
+                <input type="hidden" name="imagechosen" value="<%= image.img %>">
+            </div>
+        </div>
+    </form>
+ <% }) %>
+</div>
+<% } else { %> 
+    <div class="border rounded edit-border">
+        <h3>הופעות קרובות</h3>
+        <div class="dropdown-divider"></div>
+        <div class="row justify-content-center">
+            <label class="col-lg-1.5 col-form-label-sm">כותרת הופעות קרובות</label>
+            <div class="col-lg-3">
+                <input type="text" name="showsTitle" class="form-control form-control-sm" value="<%= shows.title %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <label class="form-label">הופעות קרובות פסקה ראשונה</label>
+                <input type="text" name="showsPara" class="form-control form-control-sm" value="<%= shows.paragraph %>">
+            </div>
+            <div class="col-lg-6">
+                <label class="form-label">הופעות קרובות קישור ראשון</label>
+                <input type="text" name="showsLink" class="form-control form-control-sm" value="<%= shows.link %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+               <label class="form-label">הופעות קרובות פסקה שנייה</label>
+               <input type="text" name="showsPara1" class="form-control form-control-sm" value="<%= shows.paragraph1 %>">
+            </div>
+            <div class="col-lg-6">
+               <label class="form-label">הופעות קרובות קישור שני</label>
+               <input type="text" name="showsLink1" class="form-control form-control-sm" value="<%= shows.link1 %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+               <label class="form-label">הופעות קרובות פסקה שלישית</label>
+               <input type="text" name="showsPara2" class="form-control form-control-sm" value="<%= shows.paragraph2 %>">
+            </div>
+            <div class="col-lg-6">
+               <label class="form-label">הופעות קרובות קישור שלישי</label>
+               <input type="text" name="showsLink2" class="form-control form-control-sm" value="<%= shows.link2 %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+               <label class="form-label">הופעות קרובות פסקה רביעית</label>
+               <input type="text" name="showsPara3" class="form-control form-control-sm" value="<%= shows.paragraph3 %>">
+            </div>
+            <div class="col-lg-6">
+               <label class="form-label">הופעות קרובות קישור רביעי</label>
+               <input type="text" name="showsLink3" class="form-control form-control-sm" value="<%= shows.link3 %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <label class="form-label">הופעות קרובות פסקה חמישית</label>
+                <input type="text" name="showsPara4" class="form-control form-control-sm" value="<%= shows.paragraph4 %>">
+            </div>
+            <div class="col-lg-6">
+                <label class="form-label">הופעות קרובות קישור חמישי</label>
+                <input type="text" name="showsLink4" class="form-control form-control-sm" value="<%= shows.link4 %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-1.5">
+                <button type="submit" class="btn btn-success btn-md" form="saveForm">שמור שינויים</button>
+            </div>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <label class="form-label">העלאת תמונות להופעות קרובות</label>
+                <div class="input-group">
+                    <input type="file" name="image" class="form-control">
+                    <button class="btn btn-outline-success" type="submit" form="saveForm">העלה</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="dropdown-divider"></div>
+    <% images.forEach(function(image){ %>
+        <form action="/deleteimage" method="POST">
+            <div class="row justify-content-center">
+                <label class="form-label"> מחיקת תמונות מהופעות קרובות</label>
+                <div class="col-lg-12">
+                    <img class="edit-image" src="uploads/images/<%= image.img %> " alt="Image">
+                    <button type="submit" class="btn btn-outline-danger">מחק תמונה</button>
+                    <input type="hidden" name="imagechosen" value="<%= image.img %>">
+                </div>
+            </div>
+        </form>
+     <% }) %>
+    </div>
+    <% } %> 

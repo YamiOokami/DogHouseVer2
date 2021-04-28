@@ -1,0 +1,30 @@
+
+<% if (lang === "en") { %>
+    <div class="border edit-border">
+        <h3>Success Page</h3>
+            <div class="dropdown-divider"></div>
+            <div class="row justify-content-center">
+                <label class="col-lg-1.5 col-form-label-sm">Success Title</label>
+                <div class="col-lg-4">
+                <input type="text" name="successTitle" form="saveForm" class="form-control form-control-sm" value="<%= success.title %>">
+                </div>
+                <div class="col-lg-1.5">
+                <button type="submit" class="btn btn-success btn-sm" form="saveForm">Save</button>
+                </div>
+            </div>
+    </div>
+<% } else { %> 
+    <div class="border edit-border">
+        <h3>דף הצלחה</h3>
+            <div class="dropdown-divider"></div>
+            <div class="row justify-content-center">
+                <label class="col-lg-1.5 col-form-label-sm">כותרת הצלחה</label>
+                <div class="col-lg-4">
+                    <input type="text" name="successTitle" form="saveForm" class="form-control form-control-sm" value="<%= success.title %>">
+                </div>
+                <div class="col-lg-1.5">
+                    <button type="submit" class="btn btn-success btn-sm" form="saveForm">שמור</button>
+                </div>
+            </div>
+    </div>
+<% } %> 

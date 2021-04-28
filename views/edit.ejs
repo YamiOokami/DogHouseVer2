@@ -4,242 +4,118 @@
 
 <div class="conatiner-fluid">
     <section id="edit">
-        <h1 class="edit-title">Edit the website</h1>   
             <% if (lang === "en") { %>
-                <form action="/save" method="post" enctype="multipart/form-data" id="saveForm">
-                    <div class="border rounded edit-border">
-                        <h3>Main Section</h3>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-3">
-                                <label class="form-label">Main Title</label>
-                                <input type="text" name="mainTitle" class="form-control form-control-sm" value="<%= main.title %>">
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="form-label">Link to music video in the main page</label>
-                                <input type="text" class="form-control form-control-sm" name="mainLink" value="<%= main.link %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-10">
-                                <label class="form-label">Main Paragraph</label>
-                                <textarea name="mainPara" cols="60" rows="5" class="form-control"><%= main.paragraph %></textarea>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-3">
-                                <label class="form-label">Link to our YouTube</label>
-                                <input type="text" class="form-control form-control-sm" name="mainLink1" value="<%= main.link1 %>">
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="form-label">Link to our Instegram</label>
-                                <input type="text" class="form-control form-control-sm" name="mainLink2" value="<%= main.link2 %>">
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="form-label">Link to our Facebook</label>
-                                <input type="text" class="form-control form-control-sm" name="mainLink3" value="<%= main.link3 %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-3">
-                                <button type="submit" class="btn btn-success btn-md" form="saveForm">Save Changes</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border rounded edit-border">
-                        <h3>Newslatter Section</h3>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <label class="col-lg-1.5 col-form-label-sm">Newslatter Title</label>
-                            <div class="col-lg-4">
-                                <input type="text" name="newslatterTitle" class="form-control form-control-sm" value="<%= news.title %>">
-                            </div>
-                            <div class="col-lg-1.5">
-                                <button type="submit" class="btn btn-success btn-sm" form="saveForm">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border rounded edit-border">
-                        <h3>Our Music Section</h3>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <label class="col-lg-1.5 col-form-label-sm">Our Music Title</label>
-                            <div class="col-lg-3">
-                                <input type="text" name="ourmusicTitle" class="form-control form-control-sm" value="<%= ourmusic.title %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-4">
-                                <label class="form-label">Our Music Spotify playlist link</label>
-                                <input type="text" class="form-control" name="ourmusicLink1" value="<%= ourmusic.link1 %>">
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label">Our Music YouTube playlist link</label>
-                                <input type="text" class="form-control" name="ourmusicLink" value="<%= ourmusic.link %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-1.5">
-                                <button type="submit" class="btn btn-success btn-md" form="saveForm">Save Changes</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border rounded edit-border">
-                        <h3>Shows Section</h3>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <label class="col-lg-1.5 col-form-label-sm">Shows Title</label>
-                            <div class="col-lg-3">
-                                <input type="text" name="showsTitle" class="form-control form-control-sm" value="<%= shows.title %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <label class="form-label">Shows first paragraph</label>
-                                <input type="text" name="showsPara" class="form-control form-control-sm" value="<%= shows.paragraph %>">
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label">Shows first link</label>
-                                <input type="text" name="showsLink" class="form-control form-control-sm" value="<%= shows.link %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                               <label class="form-label">Shows second paragraph</label>
-                               <input type="text" name="showsPara1" class="form-control form-control-sm" value="<%= shows.paragraph1 %>">
-                            </div>
-                            <div class="col-lg-6">
-                               <label class="form-label">Shows second link</label>
-                               <input type="text" name="showsLink1" class="form-control form-control-sm" value="<%= shows.link1 %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                               <label class="form-label">Shows third paragraph</label>
-                               <input type="text" name="showsPara2" class="form-control form-control-sm" value="<%= shows.paragraph2 %>">
-                            </div>
-                            <div class="col-lg-6">
-                               <label class="form-label">Shows third link</label>
-                               <input type="text" name="showsLink2" class="form-control form-control-sm" value="<%= shows.link2 %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                               <label class="form-label">Shows forth paragraph</label>
-                               <input type="text" name="showsPara3" class="form-control form-control-sm" value="<%= shows.paragraph3 %>">
-                            </div>
-                            <div class="col-lg-6">
-                               <label class="form-label">Shows forth link</label>
-                               <input type="text" name="showsLink3" class="form-control form-control-sm" value="<%= shows.link3 %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <label class="form-label">Shows fifth paragraph</label>
-                                <input type="text" name="showsPara4" class="form-control form-control-sm" value="<%= shows.paragraph4 %>">
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label">Shows fifth link</label>
-                                <input type="text" name="showsLink4" class="form-control form-control-sm" value="<%= shows.link4 %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-1.5">
-                                <button type="submit" class="btn btn-success btn-md" form="saveForm">Save Changes</button>
-                            </div>
-                        </div>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-3">
-                                <label class="form-label">Upload images to the shows section</label>
-                                <div class="input-group">
-                                    <input type="file" name="image" class="form-control">
-                                    <button class="btn btn-outline-success" type="submit" form="saveForm">Upload</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="dropdown-divider"></div>
-                    <% images.forEach(function(image){ %>
-                        <form action="/deleteimage" method="POST">
-                            <div class="row justify-content-center">
-                                <label class="form-label"> Delete Images from the shows section</label>
-                                <div class="col-lg-12">
-                                    <img class="edit-image" src="uploads/images/<%= image.img %> " alt="Image">
-                                    <button type="submit" class="btn btn-outline-danger">Delete Image</button>
-                                    <input type="hidden" name="imagechosen" value="<%= image.img %>">
-                                </div>
-                            </div>
+                <h1 class="edit-title">Edit the website</h1> 
+            <% } else { %>   
+                <h1 class="edit-title">עריכת האתר</h1>
+                <% } %> 
+              <div class="row">
+                <div class="col-2">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <form action="/edit-pages" method="POST">
+                            <input type="hidden" value="edit-main" name="editPage">
+                            <% if (lang === "en") { %>
+                                <button type="submit" class="btn btn-link nav-link">Main</button>      
+                            <% } else { %> 
+                                <button type="submit" class="btn btn-link nav-link">ראשי</button>
+                            <% } %> 
                         </form>
-                     <% }) %>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/edit-pages" method="POST">
+                            <input type="hidden" value="edit-news" name="editPage">
+                            <% if (lang === "en") { %>
+                            <button type="submit" class="btn btn-link nav-link">Newslatter</button>
+                            <% } else { %> 
+                            <button type="submit" class="btn btn-link nav-link">ניוזלטר</button>
+                            <% } %> 
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/edit-pages" method="POST">
+                            <input type="hidden" value="edit-music" name="editPage">
+                            <% if (lang === "en") { %>
+                            <button type="submit" class="btn btn-link nav-link">Our Music</button>
+                            <% } else { %> 
+                            <button type="submit" class="btn btn-link nav-link">המוזיקה שלנו</button>
+                            <% } %> 
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/edit-pages" method="POST">
+                            <input type="hidden" value="edit-shows" name="editPage">
+                            <% if (lang === "en") { %>
+                            <button type="submit" class="btn btn-link nav-link">Shows</button>
+                            <% } else { %> 
+                            <button type="submit" class="btn btn-link nav-link">הופעות</button>
+                            <% } %> 
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/edit-pages" method="POST">
+                            <input type="hidden" value="edit-about" name="editPage">
+                            <% if (lang === "en") { %>
+                            <button type="submit" class="btn btn-link nav-link">About</button>
+                            <% } else { %> 
+                            <button type="submit" class="btn btn-link nav-link">אודות</button>
+                            <% } %> 
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/edit-pages" method="POST">
+                            <input type="hidden" value="edit-success" name="editPage">
+                            <% if (lang === "en") { %>
+                            <button type="submit" class="btn btn-link nav-link">Success Page</button>
+                            <% } else { %> 
+                            <button type="submit" class="btn btn-link nav-link">דף הצלחה</button>
+                            <% } %> 
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/edit-pages" method="POST">
+                            <input type="hidden" value="edit-fail" name="editPage">
+                            <% if (lang === "en") { %>
+                            <button type="submit" class="btn btn-link nav-link">Error Page</button>
+                            <% } else { %> 
+                            <button type="submit" class="btn btn-link nav-link">דף שגיאה</button>
+                            <% } %> 
+                            </form>
+                        </li>
+                        <li class="nav-item">
+                            <form action="/edit-pages" method="POST">
+                            <input type="hidden" value="edit-epk" name="editPage">
+                            <% if (lang === "en") { %>
+                            <button type="submit" class="btn btn-link nav-link">EPK Page</button>
+                            <% } else { %> 
+                            <button type="submit" class="btn btn-link nav-link">דף EPK</button>
+                            <% } %> 
+                            </form>
+                        </li>
+                      </ul>
                 </div>
-                <div class="border edit-border">
-                    <h3>About Page</h3>
-                    <div class="dropdown-divider"></div>
-                    <div class="row justify-content-center">
-                        <label class="col-lg-1.5 col-form-label-sm">About Title</label>
-                        <div class="col-lg-3">
-                            <input type="text" name="aboutTitle" form="saveForm" class="form-control form-control-sm" value="<%= aboutus.title %>">
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-10">
-                            <label class="form-label">About us paragraph</label>
-                            <textarea name="aboutPara" form="saveForm" cols="60" rows="5" class="form-control"><%= aboutus.paragraph %></textarea>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-1.5">
-                            <button type="submit" class="btn btn-success btn-md" form="saveForm">Save Changes</button>
-                        </div>
-                    </div>
+                <div class="col-10">
+                    <form action="/save" method="post" enctype="multipart/form-data" id="saveForm">
+                    <% if (pageToEdit === "edit-main") { %> 
+                        <%- include('partials/edit/edit-main') -%>
+                    <% } else if (pageToEdit === "edit-news") { %> 
+                     <%- include('partials/edit/edit-newslatter') -%>
+                     <% } else if (pageToEdit === "edit-music") { %> 
+                        <%- include('partials/edit/edit-ourmusic') -%>
+                    <% } else if (pageToEdit === "edit-shows") { %>     
+                        <%- include('partials/edit/edit-shows') -%>
+                    <% } else if (pageToEdit === "edit-about") { %> 
+                        <%- include('partials/edit/edit-about') -%>
+                    <% } else if (pageToEdit === "edit-success") { %> 
+                        <%- include('partials/edit/edit-success') -%>
+                    <% } else if (pageToEdit === "edit-fail") { %>              
+                        <%- include('partials/edit/edit-fail') -%>
+                    <% } else if (pageToEdit === "edit-epk") { %>              
+                        <%- include('partials/edit/edit-epk') -%>
+                    <% } %> 
                 </div>
-                <div class="border edit-border">
-                    <h3>Success Page</h3>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <label class="col-lg-1.5 col-form-label-sm">Success Title</label>
-                            <div class="col-lg-4">
-                                <input type="text" name="successTitle" form="saveForm" class="form-control form-control-sm" value="<%= success.title %>">
-                            </div>
-                            <div class="col-lg-1.5">
-                                <button type="submit" class="btn btn-success btn-sm" form="saveForm">Save</button>
-                            </div>
-                        </div>
-                </div>
-                <div class="border edit-border">
-                    <h3>Fail Page</h3>
-                    <div class="dropdown-divider"></div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-3">
-                            <label class="form-label-sm">Fail Title</label>
-                            <input type="text" name="failTitle" form="saveForm" class="form-control form-control-sm" value="<%= failed.title %>">
-                        </div>
-                        <div class="col-lg-3">
-                            <label class="form-label-sm">Fail paragraph</label>
-                            <input type="text" name="failPara" form="saveForm" class="form-control form-control-sm" value="<%= failed.paragraph %>">
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-1.5">
-                            <button type="submit" class="btn btn-success btn-md" form="saveForm">Save Changes</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="border edit-border">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-12">
-                            <h3>Edit the EPK page</h3>
-                            <textarea name="EPK" id="mytextarea" cols="30" rows="10" form="saveForm"><%= epkcont.content %> </textarea>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-12">
-                            <button type="submit" class="btn btn-success" form="saveForm">Save Changes</button>
-                        </div>
-                    </div>
-                </div>
+              </div>
+                    <% if (lang === "en") { %> 
                 <div class="row">
                     <div class="col-lg-6">
                         <form action="/default" method="post">
@@ -252,241 +128,7 @@
                         </form>
                     </div>
                 </div>
-            <% } else { %>
-                <form action="/save" method="post" enctype="multipart/form-data" id="saveForm">
-                    <div class="border rounded edit-border">
-                        <h3>עמוד ראשי</h3>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-3">
-                                <label class="form-label">כותרת ראשית</label>
-                                <input type="text" name="mainTitle" class="form-control form-control-sm" value="<%= main.title %>">
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="form-label">קישור לקליפ בעמוד הראשי</label>
-                                <input type="text" class="form-control form-control-sm" name="mainLink" value="<%= main.link %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-10">
-                                <label class="form-label">פסקה ראשית</label>
-                                <textarea name="mainPara" cols="60" rows="5" class="form-control"><%= main.paragraph %></textarea>
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-3">
-                                <label class="form-label">קישור לעמוד יוטוב</label>
-                                <input type="text" class="form-control form-control-sm" name="mainLink1" value="<%= main.link1 %>">
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="form-label">קישור לעמוד אינסטגרם</label>
-                                <input type="text" class="form-control form-control-sm" name="mainLink2" value="<%= main.link2 %>">
-                            </div>
-                            <div class="col-lg-3">
-                                <label class="form-label">קישור לעמוד פייסבוק</label>
-                                <input type="text" class="form-control form-control-sm" name="mainLink3" value="<%= main.link3 %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-3">
-                                <button type="submit" class="btn btn-success btn-md" form="saveForm">שמור שינויים</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border rounded edit-border">
-                        <h3>ניוזלטר</h3>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <label class="col-lg-1.5 col-form-label-sm">כותרת ניוזלטר</label>
-                            <div class="col-lg-4">
-                                <input type="text" name="newslatterTitle" class="form-control form-control-sm" value="<%= news.title %>">
-                            </div>
-                            <div class="col-lg-1.5">
-                                <button type="submit" class="btn btn-success btn-sm" form="saveForm">שמור</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border rounded edit-border">
-                        <h3>המוזיקה שלנו</h3>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <label class="col-lg-1.5 col-form-label-sm">כותרת המוזיקה שלנו</label>
-                            <div class="col-lg-3">
-                                <input type="text" name="ourmusicTitle" class="form-control form-control-sm" value="<%= ourmusic.title %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-4">
-                                <label class="form-label">קישור לפלייליסט ספוטיפיי</label>
-                                <input type="text" class="form-control" name="ourmusicLink1" value="<%= ourmusic.link1 %>">
-                            </div>
-                            <div class="col-lg-4">
-                                <label class="form-label">קישור לפלייליסט  יוטוב</label>
-                                <input type="text" class="form-control" name="ourmusicLink" value="<%= ourmusic.link %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-1.5">
-                                <button type="submit" class="btn btn-success btn-md" form="saveForm">שמור שינויים</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border rounded edit-border">
-                        <h3>הופעות קרובות</h3>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <label class="col-lg-1.5 col-form-label-sm">כותרת הופעות קרובות</label>
-                            <div class="col-lg-3">
-                                <input type="text" name="showsTitle" class="form-control form-control-sm" value="<%= shows.title %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <label class="form-label">הופעות קרובות פסקה ראשונה</label>
-                                <input type="text" name="showsPara" class="form-control form-control-sm" value="<%= shows.paragraph %>">
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label">הופעות קרובות קישור ראשון</label>
-                                <input type="text" name="showsLink" class="form-control form-control-sm" value="<%= shows.link %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                               <label class="form-label">הופעות קרובות פסקה שנייה</label>
-                               <input type="text" name="showsPara1" class="form-control form-control-sm" value="<%= shows.paragraph1 %>">
-                            </div>
-                            <div class="col-lg-6">
-                               <label class="form-label">הופעות קרובות קישור שני</label>
-                               <input type="text" name="showsLink1" class="form-control form-control-sm" value="<%= shows.link1 %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                               <label class="form-label">הופעות קרובות פסקה שלישית</label>
-                               <input type="text" name="showsPara2" class="form-control form-control-sm" value="<%= shows.paragraph2 %>">
-                            </div>
-                            <div class="col-lg-6">
-                               <label class="form-label">הופעות קרובות קישור שלישי</label>
-                               <input type="text" name="showsLink2" class="form-control form-control-sm" value="<%= shows.link2 %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                               <label class="form-label">הופעות קרובות פסקה רביעית</label>
-                               <input type="text" name="showsPara3" class="form-control form-control-sm" value="<%= shows.paragraph3 %>">
-                            </div>
-                            <div class="col-lg-6">
-                               <label class="form-label">הופעות קרובות קישור רביעי</label>
-                               <input type="text" name="showsLink3" class="form-control form-control-sm" value="<%= shows.link3 %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-6">
-                                <label class="form-label">הופעות קרובות פסקה חמישית</label>
-                                <input type="text" name="showsPara4" class="form-control form-control-sm" value="<%= shows.paragraph4 %>">
-                            </div>
-                            <div class="col-lg-6">
-                                <label class="form-label">הופעות קרובות קישור חמישי</label>
-                                <input type="text" name="showsLink4" class="form-control form-control-sm" value="<%= shows.link4 %>">
-                            </div>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-1.5">
-                                <button type="submit" class="btn btn-success btn-md" form="saveForm">שמור שינויים</button>
-                            </div>
-                        </div>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <div class="col-lg-3">
-                                <label class="form-label">העלאת תמונות להופעות קרובות</label>
-                                <div class="input-group">
-                                    <input type="file" name="image" class="form-control">
-                                    <button class="btn btn-outline-success" type="submit" form="saveForm">העלה</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="dropdown-divider"></div>
-                    <% images.forEach(function(image){ %>
-                        <form action="/deleteimage" method="POST">
-                            <div class="row justify-content-center">
-                                <label class="form-label"> מחיקת תמונות מהופעות קרובות</label>
-                                <div class="col-lg-12">
-                                    <img class="edit-image" src="uploads/images/<%= image.img %> " alt="Image">
-                                    <button type="submit" class="btn btn-outline-danger">מחק תמונה</button>
-                                    <input type="hidden" name="imagechosen" value="<%= image.img %>">
-                                </div>
-                            </div>
-                        </form>
-                     <% }) %>
-                </div>
-                <div class="border edit-border">
-                    <h3>דף אודות</h3>
-                    <div class="dropdown-divider"></div>
-                    <div class="row justify-content-center">
-                        <label class="col-lg-1.5 col-form-label-sm">כותרת אודות</label>
-                        <div class="col-lg-3">
-                            <input type="text" name="aboutTitle" form="saveForm" class="form-control form-control-sm" value="<%= aboutus.title %>">
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-10">
-                            <label class="form-label">פסקאת אודות</label>
-                            <textarea name="aboutPara" form="saveForm" cols="60" rows="5" class="form-control"><%= aboutus.paragraph %></textarea>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-1.5">
-                            <button type="submit" class="btn btn-success btn-md" form="saveForm">שמור שינויים</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="border edit-border">
-                    <h3>דף הצלחה</h3>
-                        <div class="dropdown-divider"></div>
-                        <div class="row justify-content-center">
-                            <label class="col-lg-1.5 col-form-label-sm">כותרת הצלחה</label>
-                            <div class="col-lg-4">
-                                <input type="text" name="successTitle" form="saveForm" class="form-control form-control-sm" value="<%= success.title %>">
-                            </div>
-                            <div class="col-lg-1.5">
-                                <button type="submit" class="btn btn-success btn-sm" form="saveForm">שמור</button>
-                            </div>
-                        </div>
-                </div>
-                <div class="border edit-border">
-                    <h3>דף כישלון</h3>
-                    <div class="dropdown-divider"></div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-3">
-                            <label class="form-label-sm">כותרת כישלון</label>
-                            <input type="text" name="failTitle" form="saveForm" class="form-control form-control-sm" value="<%= failed.title %>">
-                        </div>
-                        <div class="col-lg-3">
-                            <label class="form-label-sm">פסקאת כישלון</label>
-                            <input type="text" name="failPara" form="saveForm" class="form-control form-control-sm" value="<%= failed.paragraph %>">
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-1.5">
-                            <button type="submit" class="btn btn-success btn-md" form="saveForm">שמור שינויים</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="border edit-border">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-12">
-                            <h3>עריכת דף EPK</h3>
-                            <textarea name="EPK" id="mytextarea" cols="30" rows="10" form="saveForm"><%= epkcont.content %> </textarea>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-12">
-                            <button type="submit" class="btn btn-success" form="saveForm">שמור שינויים</button>
-                        </div>
-                    </div>
-                </div>
+                    <% } else { %> 
                 <div class="row">
                     <div class="col-lg-6">
                         <form action="/default" method="post">

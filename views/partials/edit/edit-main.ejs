@@ -1,0 +1,81 @@
+<% if (lang === "en") { %>
+<div class="border rounded edit-border">
+    <h3>Main Section</h3>
+    <div class="dropdown-divider"></div>
+    <div class="row justify-content-center">
+        <div class="col-lg-3">
+            <label class="form-label">Main Title</label>
+            <input type="text" name="mainTitle" class="form-control form-control-sm" value="<%= main.title %>">
+        </div>
+        <div class="col-lg-3">
+            <label class="form-label">Link to music video in the main page</label>
+            <input type="text" class="form-control form-control-sm" name="mainLink" value="<%= main.link %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <label class="form-label">Main Paragraph</label>
+            <textarea name="mainPara" cols="60" rows="5" class="form-control"><%= main.paragraph %></textarea>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-3">
+            <label class="form-label">Link to our YouTube</label>
+            <input type="text" class="form-control form-control-sm" name="mainLink1" value="<%= main.link1 %>">
+        </div>
+        <div class="col-lg-3">
+            <label class="form-label">Link to our Instegram</label>
+            <input type="text" class="form-control form-control-sm" name="mainLink2" value="<%= main.link2 %>">
+        </div>
+        <div class="col-lg-3">
+            <label class="form-label">Link to our Facebook</label>
+            <input type="text" class="form-control form-control-sm" name="mainLink3" value="<%= main.link3 %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-3">
+            <button type="submit" class="btn btn-success btn-md" form="saveForm">Save Changes</button>
+        </div>
+    </div>
+</div>
+<% } else { %> 
+    <div class="border rounded edit-border">
+        <h3>עמוד ראשי</h3>
+        <div class="dropdown-divider"></div>
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <label class="form-label">כותרת ראשית</label>
+                <input type="text" name="mainTitle" class="form-control form-control-sm" value="<%= main.title %>">
+            </div>
+            <div class="col-lg-3">
+                <label class="form-label">קישור לקליפ בעמוד הראשי</label>
+                <input type="text" class="form-control form-control-sm" name="mainLink" value="<%= main.link %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <label class="form-label">פסקה ראשית</label>
+                <textarea name="mainPara" cols="60" rows="5" class="form-control"><%= main.paragraph %></textarea>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <label class="form-label">קישור לעמוד יוטוב</label>
+                <input type="text" class="form-control form-control-sm" name="mainLink1" value="<%= main.link1 %>">
+            </div>
+            <div class="col-lg-3">
+                <label class="form-label">קישור לעמוד אינסטגרם</label>
+                <input type="text" class="form-control form-control-sm" name="mainLink2" value="<%= main.link2 %>">
+            </div>
+            <div class="col-lg-3">
+                <label class="form-label">קישור לעמוד פייסבוק</label>
+                <input type="text" class="form-control form-control-sm" name="mainLink3" value="<%= main.link3 %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <button type="submit" class="btn btn-success btn-md" form="saveForm">שמור שינויים</button>
+            </div>
+        </div>
+    </div>
+<% } %> 

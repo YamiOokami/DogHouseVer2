@@ -259,6 +259,7 @@ const failedPageHeb = ["fhe"];
 
 const failedPageEng = ["fen"];
 
+let pageToEdit = "";
 
 function findContent(itemsToFind) {
   if (itemsToFind.length === 1) {
@@ -588,7 +589,8 @@ app.get("/edit", async function (req, res) {
             failed: editPageMainEngCont[5],
             aboutus: editPageMainEngCont[6],
             epkcont: editEpkEngCont,
-            images: images
+            images: images,
+            pageToEdit: pageToEdit
           });
         } else {
           console.log(err);
@@ -610,7 +612,8 @@ app.get("/edit", async function (req, res) {
             failed: editPageMainHebCont[5],
             aboutus: editPageMainHebCont[6],
             epkcont: editEpkHebCont,
-            images: images
+            images: images,
+            pageToEdit: pageToEdit
           });
         } else {
           console.log(err);
@@ -1359,6 +1362,12 @@ app.post("/deleteimage", function(req, res) {
   } catch (error) {
     console.log(error);
   }
+  res.redirect("/edit");
+});
+
+//choose page to edit
+app.post("/edit-pages", function(req, res) {
+  pageToEdit = req.body.editPage;
   res.redirect("/edit");
 });
 

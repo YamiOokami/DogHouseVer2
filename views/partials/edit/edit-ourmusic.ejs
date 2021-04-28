@@ -1,0 +1,53 @@
+<% if (lang === "en") { %>
+<div class="border rounded edit-border">
+    <h3>Our Music Section</h3>
+    <div class="dropdown-divider"></div>
+    <div class="row justify-content-center">
+        <label class="col-lg-1.5 col-form-label-sm">Our Music Title</label>
+        <div class="col-lg-3">
+            <input type="text" name="ourmusicTitle" class="form-control form-control-sm" value="<%= ourmusic.title %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-4">
+            <label class="form-label">Our Music Spotify playlist link</label>
+            <input type="text" class="form-control" name="ourmusicLink1" value="<%= ourmusic.link1 %>">
+        </div>
+        <div class="col-lg-4">
+            <label class="form-label">Our Music YouTube playlist link</label>
+            <input type="text" class="form-control" name="ourmusicLink" value="<%= ourmusic.link %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-1.5">
+            <button type="submit" class="btn btn-success btn-md" form="saveForm">Save Changes</button>
+        </div>
+    </div>
+</div>
+<% } else { %> 
+    <div class="border rounded edit-border">
+        <h3>המוזיקה שלנו</h3>
+        <div class="dropdown-divider"></div>
+        <div class="row justify-content-center">
+            <label class="col-lg-1.5 col-form-label-sm">כותרת המוזיקה שלנו</label>
+            <div class="col-lg-3">
+                <input type="text" name="ourmusicTitle" class="form-control form-control-sm" value="<%= ourmusic.title %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-4">
+                <label class="form-label">קישור לפלייליסט ספוטיפיי</label>
+                <input type="text" class="form-control" name="ourmusicLink1" value="<%= ourmusic.link1 %>">
+            </div>
+            <div class="col-lg-4">
+                <label class="form-label">קישור לפלייליסט  יוטוב</label>
+                <input type="text" class="form-control" name="ourmusicLink" value="<%= ourmusic.link %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-1.5">
+                <button type="submit" class="btn btn-success btn-md" form="saveForm">שמור שינויים</button>
+            </div>
+        </div>
+    </div>
+    <% } %> 

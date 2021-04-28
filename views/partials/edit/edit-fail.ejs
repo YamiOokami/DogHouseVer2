@@ -1,0 +1,41 @@
+<% if (lang === "en") { %> 
+<div class="border edit-border">
+    <h3>Fail Page</h3>
+    <div class="dropdown-divider"></div>
+    <div class="row justify-content-center">
+        <div class="col-lg-3">
+            <label class="form-label-sm">Fail Title</label>
+            <input type="text" name="failTitle" form="saveForm" class="form-control form-control-sm" value="<%= failed.title %>">
+        </div>
+        <div class="col-lg-3">
+            <label class="form-label-sm">Fail paragraph</label>
+            <input type="text" name="failPara" form="saveForm" class="form-control form-control-sm" value="<%= failed.paragraph %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-1.5">
+            <button type="submit" class="btn btn-success btn-md" form="saveForm">Save Changes</button>
+        </div>
+    </div>
+</div>
+<% } else { %> 
+    <div class="border edit-border">
+        <h3>דף כישלון</h3>
+        <div class="dropdown-divider"></div>
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <label class="form-label-sm">כותרת כישלון</label>
+                <input type="text" name="failTitle" form="saveForm" class="form-control form-control-sm" value="<%= failed.title %>">
+            </div>
+            <div class="col-lg-3">
+                <label class="form-label-sm">פסקאת כישלון</label>
+                <input type="text" name="failPara" form="saveForm" class="form-control form-control-sm" value="<%= failed.paragraph %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-1.5">
+                <button type="submit" class="btn btn-success btn-md" form="saveForm">שמור שינויים</button>
+            </div>
+        </div>
+    </div>
+<% } %> 

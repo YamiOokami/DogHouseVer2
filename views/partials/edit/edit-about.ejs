@@ -1,0 +1,45 @@
+<% if (lang === "en") { %>
+<div class="border edit-border">
+    <h3>About Page</h3>
+    <div class="dropdown-divider"></div>
+    <div class="row justify-content-center">
+        <label class="col-lg-1.5 col-form-label-sm">About Title</label>
+        <div class="col-lg-3">
+            <input type="text" name="aboutTitle" form="saveForm" class="form-control form-control-sm" value="<%= aboutus.title %>">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <label class="form-label">About us paragraph</label>
+            <textarea name="aboutPara" form="saveForm" cols="60" rows="5" class="form-control"><%= aboutus.paragraph %></textarea>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-1.5">
+            <button type="submit" class="btn btn-success btn-md" form="saveForm">Save Changes</button>
+        </div>
+    </div>
+</div>
+<% } else { %> 
+    <div class="border edit-border">
+        <h3>דף אודות</h3>
+        <div class="dropdown-divider"></div>
+        <div class="row justify-content-center">
+            <label class="col-lg-1.5 col-form-label-sm">כותרת אודות</label>
+            <div class="col-lg-3">
+                <input type="text" name="aboutTitle" form="saveForm" class="form-control form-control-sm" value="<%= aboutus.title %>">
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <label class="form-label">פסקאת אודות</label>
+                <textarea name="aboutPara" form="saveForm" cols="60" rows="5" class="form-control"><%= aboutus.paragraph %></textarea>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-1.5">
+                <button type="submit" class="btn btn-success btn-md" form="saveForm">שמור שינויים</button>
+            </div>
+        </div>
+    </div>
+    <% } %> 

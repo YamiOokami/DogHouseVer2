@@ -62,7 +62,7 @@
               <% if (loggedInUser === "admin" || loggedInUser === "epk") { %>
                <li class="navbar-item">
                  <form action="/logout" method="post">
-                  <button type="submit" class="btn btn-sm btn-danger" name="logout">Log Out</button>
+                  <button type="submit" class="btn btn-sm btn-danger" name="logout"><span style="font-size: 1.4rem;">Log Out</span></button>
                 </form>
                </li>
                <% if (loggedInUser === "admin") { %>
@@ -108,7 +108,7 @@
               </li>
               <li class="navbar-item">
                 <form action="/lang" method="post">
-                  <button type="submit" class="btn btn-lg header-button globe"><i class="fas fa-globe-asia"></i></button>
+                  <button type="submit" class="btn btn-sm header-button globe"><i class="fas fa-globe-asia"></i></button>
                 </form>
               </li>
             </ul>  
@@ -118,7 +118,7 @@
             <% if (loggedInUser === "admin" || loggedInUser === "epk") { %>
               <li class="nav-item">
                 <form action="/logout" method="post">
-                 <button type="submit" class="btn btn-sm btn-danger" name="logout">התנתק</button>
+                 <button type="submit" class="btn btn-sm btn-danger" name="logout"><span style="font-size: 1.4rem;">התנתק</span></button>
                </form>
               </li>
               <% if (loggedInUser === "admin") { %>
@@ -164,7 +164,7 @@
             </li>
             <li class="navbar-item">
               <form action="/lang" method="post">
-                <button type="submit" class="btn btn-lg header-button globe"><i class="fas fa-globe-americas"></i></button>
+                <button type="submit" class="btn btn-sm header-button globe"><i class="fas fa-globe-americas"></i></button>
               </form>
             </li>
           </ul>

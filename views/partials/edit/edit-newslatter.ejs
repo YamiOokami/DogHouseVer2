@@ -1,0 +1,29 @@
+<% if (lang === "en") { %>
+<div class="border rounded edit-border">
+    <h3>Newslatter Section</h3>
+    <div class="dropdown-divider"></div>
+    <div class="row justify-content-center">
+        <label class="col-lg-1.5 col-form-label-sm">Newslatter Title</label>
+        <div class="col-lg-4">
+            <input type="text" name="newslatterTitle" class="form-control form-control-sm" value="<%= news.title %>">
+        </div>
+        <div class="col-lg-1.5">
+            <button type="submit" class="btn btn-success btn-sm" form="saveForm">Save</button>
+        </div>
+    </div>
+</div>
+<% } else { %> 
+    <div class="border rounded edit-border">
+        <h3>ניוזלטר</h3>
+        <div class="dropdown-divider"></div>
+        <div class="row justify-content-center">
+            <label class="col-lg-1.5 col-form-label-sm">כותרת ניוזלטר</label>
+            <div class="col-lg-4">
+                <input type="text" name="newslatterTitle" class="form-control form-control-sm" value="<%= news.title %>">
+            </div>
+            <div class="col-lg-1.5">
+                <button type="submit" class="btn btn-success btn-sm" form="saveForm">שמור</button>
+            </div>
+        </div>
+    </div>
+    <% } %> 

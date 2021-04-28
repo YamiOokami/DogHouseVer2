@@ -41,7 +41,6 @@ h1 {
 }
 
 
-
 .nav-link {
   font-size: 1.2rem;
   font-weight: 600;
@@ -54,6 +53,10 @@ h1 {
 
 .dropdownitem {
   margin: 0 3% 4% 3%;
+}
+
+.login {
+  margin-bottom: 5px;
 }
 
 /* Title section */
@@ -72,9 +75,10 @@ h1 {
   color: inherit;
 }
 
+
 .globe {
   color: #fff;
-  font-size: 2em;
+  font-size: 1.5rem;
 }
 
 .description {
@@ -176,6 +180,10 @@ h1 {
   margin: 20px 10px;
 }
 
+.p-footer {
+  margin-bottom: 0;
+}
+
 /* scroll up button */
 
 .back-to-top {
@@ -186,15 +194,20 @@ h1 {
 }
 
 
-#contact {
-  text-align: left;
-}
-
 .contact-title {
   margin-bottom: 10px;
   text-align: center;
 }
 
+#contact .row {
+  margin-bottom: 1%;
+}
+
+#contact .border {
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 1%;
+}
 
 .dog-stick {
   width: 73%;
@@ -206,7 +219,7 @@ h1 {
 }
 
 #edit {
-  padding-bottom: 3%;
+  padding-bottom: 5%;
 }
 
 #edit .row {
