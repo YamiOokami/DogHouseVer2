@@ -79,11 +79,11 @@ app.use(passport.session());
 
 
 //mongoose connection
-
 mongoose.connect("mongodb://localhost:27017/doghouseDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
 
 mongoose.set("useCreateIndex", true);
 
@@ -227,6 +227,8 @@ Epk.find({}, function (err, foundEpk) {
   }
 });
 
+
+
 //main variable for language
 
 let lang = "he";
@@ -261,6 +263,7 @@ const failedPageEng = ["fen"];
 
 let pageToEdit = "";
 
+// function to find items in the DB.
 function findContent(itemsToFind) {
   if (itemsToFind.length === 1) {
     let dataFound = Content.findOne({
@@ -630,715 +633,899 @@ app.get("/edit", async function (req, res) {
 // edit page update the database function
 
 // save button function
-app.post("/save", upload.single('image') ,function(req, res){  
+app.post("/save", upload.single('image') , async function(req, res){  
 
 //get current fields data & update last modified fields
 
 if (lang === "en") {
-   Content.find({
-    name: { $in: editPageEng }
-   }, function (err, foundContent) {
-    if (err) {
-      console.log(err);
-      res.redirect("/failed");
-    } else {
-      console.log(req.body.successTitle);
-      Content.bulkWrite([
-        { updateOne:
-          {
-            "filter": {"name": "menl"},
-            "update": {
-              "title": foundContent[0].title,
-              "paragraph": foundContent[0].paragraph,
-              "link": foundContent[0].link,
-              "link1": foundContent[0].link1,
-              "link2": foundContent[0].link2,
-              "link3": foundContent[0].link3
-            }
-          }
-        }, {
-          updateOne: {
-            "filter": {"name" : "nenl"},
-            "update": {
-              "title": foundContent[1].title
-            }
-          }
-        }, {
-          updateOne: {
-            "filter": {"name" : "omenl"},
-            "update": {
-              "title": foundContent[2].title,
-              "link": foundContent[2].link,
-              "link1": foundContent[2].link1
-            }
-          }
-        }, {
-          updateOne: {
-            "filter": {"name" : "senl"},
-            "update": {
-              "title": foundContent[3].title,
-              "paragraph": foundContent[3].paragraph,
-              "paragraph1": foundContent[3].paragraph1,
-              "paragraph2": foundContent[3].paragraph2,
-              "paragraph3": foundContent[3].paragraph3,
-              "paragraph4": foundContent[3].paragraph4,
-              "link": foundContent[3].link,
-              "link1": foundContent[3].link1,
-              "link2": foundContent[3].link2,
-              "link3": foundContent[3].link3,
-              "link4": foundContent[3].link4
-            }
-          }
-        }, {
-          updateOne: {
-            "filter": {"name" : "suenl"},
-            "update": {
-              "title": foundContent[4].title
-            }
-          }
-        } , {
-          updateOne: {
-            "filter": {"name" : "fenl"},
-            "update": {
-              "title": foundContent[5].title,
-              "paragraph": foundContent[5].paragraph
-            }
-          }
-        } , {
-          updateOne: {
-            "filter": {"name" : "auenl"},
-            "update": {
-              "title": foundContent[6].title,
-              "paragraph": foundContent[6].paragraph
-            }
-          }
-        },
-        // update all of the fields that that's been changed in the edit page in the db
-        { updateOne:
-          {
-            "filter": {"name" : "men"},
-            "update": {
-              "title": req.body.mainTitle,
-              "paragraph": req.body.mainPara,
-              "link": req.body.mainLink,
-              "link1": req.body.mainLink1,
-              "link2": req.body.mainLink2,
-              "link3": req.body.mainLink3
-            }
-          }
-          }, {
-            updateOne: {
-              "filter": {"name" : "nen"},
-              "update": {
-                "title": req.body.newslatterTitle
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "omen"},
-              "update": {
-                "title": req.body.ourmusicTitle,
-                "link": req.body.ourmusicLink,
-                "link1": req.body.ourmusicLink1
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "sen"},
-              "update": {
-                "title": req.body.showsTitle,
-                "paragraph": req.body.showsPara,
-                "paragraph1": req.body.showsPara1,
-                "paragraph2": req.body.showsPara2,
-                "paragraph3": req.body.showsPara3,
-                "paragraph4": req.body.showsPara4,
-                "link": req.body.showsLink,
-                "link2": req.body.showsLink2,
-                "link3": req.body.showsLink3,
-                "link4": req.body.showsLink4
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "suen"},
-              "update": {
-                "title": req.body.successTitle
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "fen"},
-              "update": {
-                "title": req.body.failTitle,
-                "paragraph": req.body.failPara
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "auen"},
-              "update": {
-                "title": req.body.aboutTitle,
-                "paragraph": req.body.aboutPara
-              }
-            }
-          }
-      ], function (err) {
-        if (err) {
-          console.log(err);
-          res.redirect("/failed")
-        } else {
-          res.redirect("/success")
-        }
-      });
-    }
+  
+  let foundContent = await findContent(editPageEng);
+  if (foundContent) {
+    switch (pageToEdit) {
+      case "edit-main":
+        Content.updateOne({name: "menl"},{
+          "title": foundContent[0].title,
+           "paragraph": foundContent[0].paragraph,
+           "link": foundContent[0].link,
+           "link1": foundContent[0].link1,
+           "link2": foundContent[0].link2,
+           "link3": foundContent[0].link3
+   }, function(err) {
+     if (err) {
+       console.log(err);
+       res.redirect("/failed");
+     }
+   });
+    Content.updateOne({name:"men"}, {
+      "title": req.body.mainTitle,
+      "paragraph": req.body.mainPara,
+      "link": req.body.mainLink,
+      "link1": req.body.mainLink1,
+      "link2": req.body.mainLink2,
+      "link3": req.body.mainLink3
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } else {
+       res.redirect("/success");
+      }
+    });
+        break;
+    case "edit-news":
+      Content.updateOne({name: "nenl"},{
+        "title": foundContent[1].title
+ }, function(err) {
+   if (err) {
+     console.log(err);
+     res.redirect("/failed");
+   }
+ });
+ Content.updateOne({name: "nen"}, {
+  "title": req.body.newslatterTitle
+ }, function(err) {
+  if (err) {
+    console.log(err);
+    res.redirect("/failed");
+  } else {
+   res.redirect("/success");
+  }
+});
+    break;
+    case "edit-music":
+    Content.updateOne({name: "omenl"},{
+      "title": foundContent[2].title,
+      "link": foundContent[2].link,
+      "link1": foundContent[2].link1
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      }
+    });
+    Content.updateOne({name: "omen"}, {
+      "title": req.body.ourmusicTitle,
+      "link": req.body.ourmusicLink,
+      "link1": req.body.ourmusicLink1
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } else {
+       res.redirect("/success");
+      }
+    });
+    break;
+    case "edit-shows":
+    Content.updateOne({name: "senl"}, {
+      "title": foundContent[3].title,
+      "paragraph": foundContent[3].paragraph,
+      "paragraph1": foundContent[3].paragraph1,
+      "paragraph2": foundContent[3].paragraph2,
+      "paragraph3": foundContent[3].paragraph3,
+      "paragraph4": foundContent[3].paragraph4,
+      "link": foundContent[3].link,
+      "link1": foundContent[3].link1,
+      "link2": foundContent[3].link2,
+      "link3": foundContent[3].link3,
+      "link4": foundContent[3].link4
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } 
+    });
+    Content.updateOne({name: "sen"}, {
+      "title": req.body.showsTitle,
+      "paragraph": req.body.showsPara,
+      "paragraph1": req.body.showsPara1,
+      "paragraph2": req.body.showsPara2,
+      "paragraph3": req.body.showsPara3,
+      "paragraph4": req.body.showsPara4,
+      "link": req.body.showsLink,
+      "link2": req.body.showsLink2,
+      "link3": req.body.showsLink3,
+      "link4": req.body.showsLink4
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } else {
+       res.redirect("/success");
+      }
     });
     try {
       Image.create({img: req.file.filename});
     } catch (error) {
       console.log("No Image was selected");
     }
-    Epk.updateOne({name: "epken"},{content: req.body.EPK}, function(err) {
+    break;
+    case "edit-about":
+    Content.updateOne({name: "auenl"}, {
+      "title": foundContent[6].title,
+      "paragraph": foundContent[6].paragraph
+    }, function(err) {
       if (err) {
         console.log(err);
-      } else {
-        console.log("Successfully updated epk content.");
+        res.redirect("/failed");
       }
     });
+    Content.updateOne({name: "auen"}, {
+      "title": req.body.aboutTitle,
+      "paragraph": req.body.aboutPara
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } else {
+       res.redirect("/success");
+      }
+    });
+    break;
+    case "edit-success":
+    Content.updateOne({name:"suenl"}, {
+      "title": foundContent[4].title
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      }
+    });
+    Content.updateOne({name: "suen"}, {
+      "title": req.body.successTitle
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } else {
+       res.redirect("/success");
+      }
+    });
+    break;
+    case "edit-fail":
+      Content.updateOne({name:"fenl"}, {
+        "title": foundContent[5].title,
+        "paragraph": foundContent[5].paragraph
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        }
+      });
+      Content.updateOne({name: "fen"}, {
+        "title": req.body.failTitle,
+        "paragraph": req.body.failPara
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+         res.redirect("/success");
+        }
+      });
+      break;
+      case "edit-epk":
+        Epk.updateOne({name: "epken"},{content: req.body.EPK}, function(err) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("successfully updated epk content");
+            res.redirect("/success");
+          }
+        });
+      break
+      default: 
+      console.log(err);
+      res.redirect("/failed");
+        break;
+    }
+  } else {
+    console.log(err + "didn't found any content");
+    res.redirect("/failed");
+  }
 } else {
   //find Hebrew values and update them
-  Content.find({
-    name: { $in: editPageHeb }
-   }, function (err, foundContent) {
-    if (err) {
-      console.log(err);
-      res.redirect("/failed");
-    } else {
-      Content.bulkWrite([
-        { updateOne:
-          {
-            "filter": {"name": "mhel"},
-            "update": {
-              "title": foundContent[0].title,
-              "paragraph": foundContent[0].paragraph,
-              "link": foundContent[0].link,
-              "link1": foundContent[0].link1,
-              "link2": foundContent[0].link2,
-              "link3": foundContent[0].link3
-            }
-          }
-        }, {
-          updateOne: {
-            "filter": {"name" : "nhel"},
-            "update": {
-              "title": foundContent[1].title
-            }
-          }
-        }, {
-          updateOne: {
-            "filter": {"name" : "omhel"},
-            "update": {
-              "title": foundContent[2].title,
-              "link": foundContent[2].link,
-              "link1": foundContent[2].link1
-            }
-          }
-        }, {
-          updateOne: {
-            "filter": {"name" : "shel"},
-            "update": {
-              "title": foundContent[3].title,
-              "paragraph": foundContent[3].paragraph,
-              "paragraph1": foundContent[3].paragraph1,
-              "paragraph2": foundContent[3].paragraph2,
-              "paragraph3": foundContent[3].paragraph3,
-              "paragraph4": foundContent[3].paragraph4,
-              "link": foundContent[3].link,
-              "link1": foundContent[3].link1,
-              "link2": foundContent[3].link2,
-              "link3": foundContent[3].link3,
-              "link4": foundContent[3].link4
-            }
-          }
-        }, {
-          updateOne: {
-            "filter": {"name" : "suhel"},
-            "update": {
-              "title": foundContent[4].title
-            }
-          }
-        } , {
-          updateOne: {
-            "filter": {"name" : "fhel"},
-            "update": {
-              "title": foundContent[5].title,
-              "paragraph": foundContent[5].paragraph
-            }
-          }
-        } , {
-          updateOne: {
-            "filter": {"name" : "auhel"},
-            "update": {
-              "title": foundContent[6].title,
-              "paragraph": foundContent[6].paragraph
-            }
-          }
-        },
-        // update all of the fields that that's been changed in the edit page in the db
-        { updateOne:
-          {
-            "filter": {"name" : "mhe"},
-            "update": {
-              "title": req.body.mainTitle,
-              "paragraph": req.body.mainPara,
-              "link": req.body.mainLink,
-              "link1": req.body.mainLink1,
-              "link2": req.body.mainLink2,
-              "link3": req.body.mainLink3
-            }
-          }
-          }, {
-            updateOne: {
-              "filter": {"name" : "nhe"},
-              "update": {
-                "title": req.body.newslatterTitle
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "omhe"},
-              "update": {
-                "title": req.body.ourmusicTitle,
-                "link": req.body.ourmusicLink,
-                "link1": req.body.ourmusicLink1
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "she"},
-              "update": {
-                "title": req.body.showsTitle,
-                "paragraph": req.body.showsPara,
-                "paragraph1": req.body.showsPara1,
-                "paragraph2": req.body.showsPara2,
-                "paragraph3": req.body.showsPara3,
-                "paragraph4": req.body.showsPara4,
-                "link": req.body.showsLink,
-                "link2": req.body.showsLink2,
-                "link3": req.body.showsLink3,
-                "link4": req.body.showsLink4
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "suhe"},
-              "update": {
-                "title": req.body.successTitle
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "fhe"},
-              "update": {
-                "title": req.body.failTitle,
-                "paragraph": req.body.failPara
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "auhe"},
-              "update": {
-                "title": req.body.aboutTitle,
-                "paragraph": req.body.aboutPara
-              }
-            }
-          }
-      ], function (err) {
-        if (err) {
-          console.log(err);
-          res.redirect("/failed")
-        } else {
-          res.redirect("/success")
-        }
-      });
-    }
+  // Save the last modified data in Hebrew to the last edit fields and save the new data to the DB
+  let foundContent = await findContent(editPageHeb);
+  if (foundContent) {
+    switch (pageToEdit) {
+      case "edit-main":
+        Content.updateOne({name: "mhel"},{
+          "title": foundContent[0].title,
+           "paragraph": foundContent[0].paragraph,
+           "link": foundContent[0].link,
+           "link1": foundContent[0].link1,
+           "link2": foundContent[0].link2,
+           "link3": foundContent[0].link3
+   }, function(err) {
+     if (err) {
+       console.log(err);
+       res.redirect("/failed");
+     }
+   });
+    Content.updateOne({name:"mhe"}, {
+      "title": req.body.mainTitle,
+      "paragraph": req.body.mainPara,
+      "link": req.body.mainLink,
+      "link1": req.body.mainLink1,
+      "link2": req.body.mainLink2,
+      "link3": req.body.mainLink3
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } else {
+       res.redirect("/success");
+      }
+    });
+        break;
+    case "edit-news":
+      Content.updateOne({name: "nhel"},{
+        "title": foundContent[1].title
+ }, function(err) {
+   if (err) {
+     console.log(err);
+     res.redirect("/failed");
+   }
+ });
+ Content.updateOne({name: "nhe"}, {
+  "title": req.body.newslatterTitle
+ }, function(err) {
+  if (err) {
+    console.log(err);
+    res.redirect("/failed");
+  } else {
+   res.redirect("/success");
+  }
+});
+    break;
+    case "edit-music":
+    Content.updateOne({name: "omhel"},{
+      "title": foundContent[2].title,
+      "link": foundContent[2].link,
+      "link1": foundContent[2].link1
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      }
+    });
+    Content.updateOne({name: "omhe"}, {
+      "title": req.body.ourmusicTitle,
+      "link": req.body.ourmusicLink,
+      "link1": req.body.ourmusicLink1
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } else {
+       res.redirect("/success");
+      }
+    });
+    break;
+    case "edit-shows":
+    Content.updateOne({name: "shel"}, {
+      "title": foundContent[3].title,
+      "paragraph": foundContent[3].paragraph,
+      "paragraph1": foundContent[3].paragraph1,
+      "paragraph2": foundContent[3].paragraph2,
+      "paragraph3": foundContent[3].paragraph3,
+      "paragraph4": foundContent[3].paragraph4,
+      "link": foundContent[3].link,
+      "link1": foundContent[3].link1,
+      "link2": foundContent[3].link2,
+      "link3": foundContent[3].link3,
+      "link4": foundContent[3].link4
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } 
+    });
+    Content.updateOne({name: "she"}, {
+      "title": req.body.showsTitle,
+      "paragraph": req.body.showsPara,
+      "paragraph1": req.body.showsPara1,
+      "paragraph2": req.body.showsPara2,
+      "paragraph3": req.body.showsPara3,
+      "paragraph4": req.body.showsPara4,
+      "link": req.body.showsLink,
+      "link2": req.body.showsLink2,
+      "link3": req.body.showsLink3,
+      "link4": req.body.showsLink4
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } else {
+       res.redirect("/success");
+      }
     });
     try {
       Image.create({img: req.file.filename});
     } catch (error) {
       console.log("No Image was selected");
     }
-    Epk.updateOne({name: "epkheb"},{content: req.body.EPK}, function(err) {
+    break;
+    case "edit-about":
+    Content.updateOne({name: "auhel"}, {
+      "title": foundContent[6].title,
+      "paragraph": foundContent[6].paragraph
+    }, function(err) {
       if (err) {
         console.log(err);
-      } else {
-        console.log("successfully updated epk content");
+        res.redirect("/failed");
       }
     });
+    Content.updateOne({name: "auhe"}, {
+      "title": req.body.aboutTitle,
+      "paragraph": req.body.aboutPara
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } else {
+       res.redirect("/success");
+      }
+    });
+    break;
+    case "edit-success":
+    Content.updateOne({name:"suhel"}, {
+      "title": foundContent[4].title
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      }
+    });
+    Content.updateOne({name: "suhe"}, {
+      "title": req.body.successTitle
+    }, function(err) {
+      if (err) {
+        console.log(err);
+        res.redirect("/failed");
+      } else {
+       res.redirect("/success");
+      }
+    });
+    break;
+    case "edit-fail":
+      Content.updateOne({name:"fhel"}, {
+        "title": foundContent[5].title,
+        "paragraph": foundContent[5].paragraph
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        }
+      });
+      Content.updateOne({name: "fhe"}, {
+        "title": req.body.failTitle,
+        "paragraph": req.body.failPara
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+         res.redirect("/success");
+        }
+      });
+      break;
+      case "edit-epk":
+        Epk.updateOne({name: "epkheb"},{content: req.body.EPK}, function(err) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("successfully updated epk content");
+            res.redirect("/success");
+          }
+        });
+      break
+      default: 
+      console.log(err);
+      res.redirect("/failed");
+        break;
+    }
+  } else {
+    console.log(err + "didn't found any content");
+    res.redirect("/failed");
+  }
 }
 });
-
+ 
 //restore last edit
 
-app.post("/lastmod", function (req, res){
+app.post("/lastmod", async function (req, res){
   if (lang === "en") {
-    Content.find({
-      name: { $in: ["menl", "nenl", "omenl", "senl", "suenl", "fenl", "auenl"]}
-     }, function (err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/failed");
-      } else {
-        Content.bulkWrite([
-          { updateOne:
-            {
-              "filter": {"name": "men"},
-              "update": {
-                "title": foundContent[0].title,
-                "paragraph": foundContent[0].paragraph,
-                "link": foundContent[0].link,
-                "link1": foundContent[0].link1,
-                "link2": foundContent[0].link2,
-                "link3": foundContent[0].link3
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "nen"},
-              "update": {
-                "title": foundContent[1].title
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "omen"},
-              "update": {
-                "title": foundContent[2].title,
-                "link": foundContent[2].link,
-                "link1": foundContent[2].link1
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "sen"},
-              "update": {
-                "title": foundContent[3].title,
-                "paragraph": foundContent[3].paragraph,
-                "paragraph1": foundContent[3].paragraph1,
-                "paragraph2": foundContent[3].paragraph2,
-                "paragraph3": foundContent[3].paragraph3,
-                "paragraph4": foundContent[3].paragraph4,
-                "link": foundContent[3].link,
-                "link1": foundContent[3].link1,
-                "link2": foundContent[3].link2,
-                "link3": foundContent[3].link3,
-                "link4": foundContent[3].link4
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "suen"},
-              "update": {
-                "title": foundContent[4].title
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "fen"},
-              "update": {
-                "title": foundContent[5].title,
-                "paragraph": foundContent[5].paragraph
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "auen"},
-              "update": {
-                "title": foundContent[6].title,
-                "paragraph": foundContent[6].paragraph
-              }
-            }
-          }
-        ], function (err) {
-          if (err) {
-            console.log(err);
-            res.redirect("/failed")
-          } else {
-            res.redirect("/success")
-          }
-        });
-      }
+    let foundContent = await findContent(["menl", "nenl", "omenl", "senl", "suenl", "fenl", "auenl"]);
+    if (foundContent) {
+      switch (pageToEdit) {
+        case "edit-main":
+          Content.updateOne({name: "men"},{
+            "title": foundContent[0].title,
+             "paragraph": foundContent[0].paragraph,
+             "link": foundContent[0].link,
+             "link1": foundContent[0].link1,
+             "link2": foundContent[0].link2,
+             "link3": foundContent[0].link3
+     }, function(err) {
+       if (err) {
+         console.log(err);
+         res.redirect("/failed");
+       } else {
+         res.redirect("/success");
+       }
       });
-  } else {
-    Content.find({
-      name: { $in: ["mhel", "nhel", "omhel", "shel", "suhel", "fhel", "auhel"]}
-     }, function (err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/failed");
-      } else {
-        Content.bulkWrite([
-          { updateOne:
-            {
-              "filter": {"name": "mhe"},
-              "update": {
-                "title": foundContent[0].title,
-                "paragraph": foundContent[0].paragraph,
-                "link": foundContent[0].link,
-                "link1": foundContent[0].link1,
-                "link2": foundContent[0].link2,
-                "link3": foundContent[0].link3
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "nhe"},
-              "update": {
-                "title": foundContent[1].title
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "omhe"},
-              "update": {
-                "title": foundContent[2].title,
-                "link": foundContent[2].link,
-                "link1": foundContent[2].link1
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "she"},
-              "update": {
-                "title": foundContent[3].title,
-                "paragraph": foundContent[3].paragraph,
-                "paragraph1": foundContent[3].paragraph1,
-                "paragraph2": foundContent[3].paragraph2,
-                "paragraph3": foundContent[3].paragraph3,
-                "paragraph4": foundContent[3].paragraph4,
-                "link": foundContent[3].link,
-                "link1": foundContent[3].link1,
-                "link2": foundContent[3].link2,
-                "link3": foundContent[3].link3,
-                "link4": foundContent[3].link4
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "suhe"},
-              "update": {
-                "title": foundContent[4].title
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "fhe"},
-              "update": {
-                "title": foundContent[5].title,
-                "paragraph": foundContent[5].paragraph
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "auhe"},
-              "update": {
-                "title": foundContent[6].title,
-                "paragraph": foundContent[6].paragraph
-              }
-            }
-          }
-        ], function (err) {
+          break;
+      case "edit-news":
+        Content.updateOne({name: "nen"},{
+          "title": foundContent[1].title
+   }, function(err) {
+     if (err) {
+       console.log(err);
+       res.redirect("/failed");
+     } else {
+       res.redirect("/success")
+     }
+   });
+      break;
+      case "edit-music":
+      Content.updateOne({name: "omen"},{
+        "title": foundContent[2].title,
+        "link": foundContent[2].link,
+        "link1": foundContent[2].link1
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-shows":
+      Content.updateOne({name: "sen"}, {
+        "title": foundContent[3].title,
+        "paragraph": foundContent[3].paragraph,
+        "paragraph1": foundContent[3].paragraph1,
+        "paragraph2": foundContent[3].paragraph2,
+        "paragraph3": foundContent[3].paragraph3,
+        "paragraph4": foundContent[3].paragraph4,
+        "link": foundContent[3].link,
+        "link1": foundContent[3].link1,
+        "link2": foundContent[3].link2,
+        "link3": foundContent[3].link3,
+        "link4": foundContent[3].link4
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-about":
+      Content.updateOne({name: "auen"}, {
+        "title": foundContent[6].title,
+        "paragraph": foundContent[6].paragraph
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-success":
+      Content.updateOne({name:"suen"}, {
+        "title": foundContent[4].title
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-fail":
+        Content.updateOne({name:"fen"}, {
+          "title": foundContent[5].title,
+          "paragraph": foundContent[5].paragraph
+        }, function(err) {
           if (err) {
             console.log(err);
-            res.redirect("/failed")
+            res.redirect("/failed");
           } else {
             res.redirect("/success")
           }
         });
+        break;
+        default: 
+        console.log(err);
+        res.redirect("/failed");
+          break;
       }
-      }); 
+    } else {
+      console.log(err + "didn't found any content");
+      res.redirect("/failed")
+    }
+  } else {
+    let foundContent = await findContent(["mhel", "nhel", "omhel", "shel", "suhel", "fhel", "auhel"]);
+    if (foundContent) {
+      switch (pageToEdit) {
+        case "edit-main":
+          Content.updateOne({name: "mhe"},{
+            "title": foundContent[0].title,
+             "paragraph": foundContent[0].paragraph,
+             "link": foundContent[0].link,
+             "link1": foundContent[0].link1,
+             "link2": foundContent[0].link2,
+             "link3": foundContent[0].link3
+     }, function(err) {
+       if (err) {
+         console.log(err);
+         res.redirect("/failed");
+       } else {
+         res.redirect("/success");
+       }
+      });
+          break;
+      case "edit-news":
+        Content.updateOne({name: "nhe"},{
+          "title": foundContent[1].title
+   }, function(err) {
+     if (err) {
+       console.log(err);
+       res.redirect("/failed");
+     } else {
+       res.redirect("/success")
+     }
+   });
+      break;
+      case "edit-music":
+      Content.updateOne({name: "omhe"},{
+        "title": foundContent[2].title,
+        "link": foundContent[2].link,
+        "link1": foundContent[2].link1
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-shows":
+      Content.updateOne({name: "she"}, {
+        "title": foundContent[3].title,
+        "paragraph": foundContent[3].paragraph,
+        "paragraph1": foundContent[3].paragraph1,
+        "paragraph2": foundContent[3].paragraph2,
+        "paragraph3": foundContent[3].paragraph3,
+        "paragraph4": foundContent[3].paragraph4,
+        "link": foundContent[3].link,
+        "link1": foundContent[3].link1,
+        "link2": foundContent[3].link2,
+        "link3": foundContent[3].link3,
+        "link4": foundContent[3].link4
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-about":
+      Content.updateOne({name: "auhe"}, {
+        "title": foundContent[6].title,
+        "paragraph": foundContent[6].paragraph
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-success":
+      Content.updateOne({name:"suhe"}, {
+        "title": foundContent[4].title
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-fail":
+        Content.updateOne({name:"fhe"}, {
+          "title": foundContent[5].title,
+          "paragraph": foundContent[5].paragraph
+        }, function(err) {
+          if (err) {
+            console.log(err);
+            res.redirect("/failed");
+          } else {
+            res.redirect("/success")
+          }
+        });
+        break;
+        default: 
+        console.log(err);
+        res.redirect("/failed");
+          break;
+      }
+    } else {
+      console.log(err + "didn't found any content");
+      res.redirect("/failed")
+    }
   }
 });
 
 // restore default values
 
-app.post("/default", function(req, res){
-
+app.post("/default", async function(req, res){
   if (lang === "en") {
-    Content.find({
-      name: { $in: ["mden", "nden", "omden", "sden", "suden", "fden", "auden"]}
-     }, function (err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/failed");
-      } else {
-        Content.bulkWrite([
-          { updateOne:
-            {
-              "filter": {"name": "men"},
-              "update": {
-                "title": foundContent[0].title,
-                "paragraph": foundContent[0].paragraph,
-                "link": foundContent[0].link,
-                "link1": foundContent[0].link1,
-                "link2": foundContent[0].link2,
-                "link3": foundContent[0].link3
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "nen"},
-              "update": {
-                "title": foundContent[1].title
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "omen"},
-              "update": {
-                "title": foundContent[2].title,
-                "link": foundContent[2].link,
-                "link1": foundContent[2].link1
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "sen"},
-              "update": {
-                "title": foundContent[3].title,
-                "paragraph": foundContent[3].paragraph,
-                "paragraph1": foundContent[3].paragraph1,
-                "paragraph2": foundContent[3].paragraph2,
-                "paragraph3": foundContent[3].paragraph3,
-                "paragraph4": foundContent[3].paragraph4,
-                "link": foundContent[3].link,
-                "link1": foundContent[3].link1,
-                "link2": foundContent[3].link2,
-                "link3": foundContent[3].link3,
-                "link4": foundContent[3].link4
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "suen"},
-              "update": {
-                "title": foundContent[4].title
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "fen"},
-              "update": {
-                "title": foundContent[5].title,
-                "paragraph": foundContent[5].paragraph
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "auen"},
-              "update": {
-                "title": foundContent[6].title,
-                "paragraph": foundContent[6].paragraph
-              }
-            }
-          }
-        ], function (err) {
-          if (err) {
-            console.log(err);
-            res.redirect("/failed")
-          } else {
-            res.redirect("/success")
-          }
-        });
-      }
+    let foundContent = await findContent(["mden", "nden", "omden", "sden", "suden", "fden", "auden"]);
+    if (foundContent) {
+      switch (pageToEdit) {
+        case "edit-main":
+          Content.updateOne({name: "men"},{
+            "title": foundContent[0].title,
+             "paragraph": foundContent[0].paragraph,
+             "link": foundContent[0].link,
+             "link1": foundContent[0].link1,
+             "link2": foundContent[0].link2,
+             "link3": foundContent[0].link3
+     }, function(err) {
+       if (err) {
+         console.log(err);
+         res.redirect("/failed");
+       } else {
+         res.redirect("/success");
+       }
       });
-  } else {
-    Content.find({
-      name: { $in: ["mdhe", "ndhe", "omdhe", "sdhe", "sudhe", "fdhe", "audhe"]}
-     }, function (err, foundContent) {
-      if (err) {
-        console.log(err);
-        res.redirect("/failed");
-      } else {
-        Content.bulkWrite([
-          { updateOne:
-            {
-              "filter": {"name": "mhe"},
-              "update": {
-                "title": foundContent[0].title,
-                "paragraph": foundContent[0].paragraph,
-                "link": foundContent[0].link,
-                "link1": foundContent[0].link1,
-                "link2": foundContent[0].link2,
-                "link3": foundContent[0].link3
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "nhe"},
-              "update": {
-                "title": foundContent[1].title
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "omhe"},
-              "update": {
-                "title": foundContent[2].title,
-                "link": foundContent[2].link,
-                "link1": foundContent[2].link1
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "she"},
-              "update": {
-                "title": foundContent[3].title,
-                "paragraph": foundContent[3].paragraph,
-                "paragraph1": foundContent[3].paragraph1,
-                "paragraph2": foundContent[3].paragraph2,
-                "paragraph3": foundContent[3].paragraph3,
-                "paragraph4": foundContent[3].paragraph4,
-                "link": foundContent[3].link,
-                "link1": foundContent[3].link1,
-                "link2": foundContent[3].link2,
-                "link3": foundContent[3].link3,
-                "link4": foundContent[3].link4
-              }
-            }
-          }, {
-            updateOne: {
-              "filter": {"name" : "suhe"},
-              "update": {
-                "title": foundContent[4].title
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "fhe"},
-              "update": {
-                "title": foundContent[5].title,
-                "paragraph": foundContent[5].paragraph
-              }
-            }
-          } , {
-            updateOne: {
-              "filter": {"name" : "auhe"},
-              "update": {
-                "title": foundContent[6].title,
-                "paragraph": foundContent[6].paragraph
-              }
-            }
-          }
-        ], function (err) {
+          break;
+      case "edit-news":
+        Content.updateOne({name: "nen"},{
+          "title": foundContent[1].title
+   }, function(err) {
+     if (err) {
+       console.log(err);
+       res.redirect("/failed");
+     } else {
+       res.redirect("/success")
+     }
+   });
+      break;
+      case "edit-music":
+      Content.updateOne({name: "omen"},{
+        "title": foundContent[2].title,
+        "link": foundContent[2].link,
+        "link1": foundContent[2].link1
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-shows":
+      Content.updateOne({name: "sen"}, {
+        "title": foundContent[3].title,
+        "paragraph": foundContent[3].paragraph,
+        "paragraph1": foundContent[3].paragraph1,
+        "paragraph2": foundContent[3].paragraph2,
+        "paragraph3": foundContent[3].paragraph3,
+        "paragraph4": foundContent[3].paragraph4,
+        "link": foundContent[3].link,
+        "link1": foundContent[3].link1,
+        "link2": foundContent[3].link2,
+        "link3": foundContent[3].link3,
+        "link4": foundContent[3].link4
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-about":
+      Content.updateOne({name: "auen"}, {
+        "title": foundContent[6].title,
+        "paragraph": foundContent[6].paragraph
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-success":
+      Content.updateOne({name:"suen"}, {
+        "title": foundContent[4].title
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-fail":
+        Content.updateOne({name:"fen"}, {
+          "title": foundContent[5].title,
+          "paragraph": foundContent[5].paragraph
+        }, function(err) {
           if (err) {
             console.log(err);
-            res.redirect("/failed")
+            res.redirect("/failed");
           } else {
             res.redirect("/success")
           }
         });
+        break;
+        default: 
+        console.log(err);
+        res.redirect("/failed");
+          break;
       }
-      }); 
+    } else {
+      console.log(err + "didn't found any content");
+      res.redirect("/failed")
+    }
+  } else {
+    let foundContent = await findContent(["mdhe", "ndhe", "omdhe", "sdhe", "sudhe", "fdhe", "audhe"]);
+    if (foundContent) {
+      switch (pageToEdit) {
+        case "edit-main":
+          Content.updateOne({name: "mhe"},{
+            "title": foundContent[0].title,
+             "paragraph": foundContent[0].paragraph,
+             "link": foundContent[0].link,
+             "link1": foundContent[0].link1,
+             "link2": foundContent[0].link2,
+             "link3": foundContent[0].link3
+     }, function(err) {
+       if (err) {
+         console.log(err);
+         res.redirect("/failed");
+       } else {
+         res.redirect("/success");
+       }
+      });
+          break;
+      case "edit-news":
+        Content.updateOne({name: "nhe"},{
+          "title": foundContent[1].title
+   }, function(err) {
+     if (err) {
+       console.log(err);
+       res.redirect("/failed");
+     } else {
+       res.redirect("/success")
+     }
+   });
+      break;
+      case "edit-music":
+      Content.updateOne({name: "omhe"},{
+        "title": foundContent[2].title,
+        "link": foundContent[2].link,
+        "link1": foundContent[2].link1
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-shows":
+      Content.updateOne({name: "she"}, {
+        "title": foundContent[3].title,
+        "paragraph": foundContent[3].paragraph,
+        "paragraph1": foundContent[3].paragraph1,
+        "paragraph2": foundContent[3].paragraph2,
+        "paragraph3": foundContent[3].paragraph3,
+        "paragraph4": foundContent[3].paragraph4,
+        "link": foundContent[3].link,
+        "link1": foundContent[3].link1,
+        "link2": foundContent[3].link2,
+        "link3": foundContent[3].link3,
+        "link4": foundContent[3].link4
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-about":
+      Content.updateOne({name: "auhe"}, {
+        "title": foundContent[6].title,
+        "paragraph": foundContent[6].paragraph
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-success":
+      Content.updateOne({name:"suhe"}, {
+        "title": foundContent[4].title
+      }, function(err) {
+        if (err) {
+          console.log(err);
+          res.redirect("/failed");
+        } else {
+          res.redirect("/success")
+        }
+      });
+      break;
+      case "edit-fail":
+        Content.updateOne({name:"fhe"}, {
+          "title": foundContent[5].title,
+          "paragraph": foundContent[5].paragraph
+        }, function(err) {
+          if (err) {
+            console.log(err);
+            res.redirect("/failed");
+          } else {
+            res.redirect("/success")
+          }
+        });
+        break;
+        default: 
+        console.log(err);
+        res.redirect("/failed");
+          break;
+      }
+    } else {
+      console.log(err + "didn't found any content");
+      res.redirect("/failed")
+    }
   }
 });
 

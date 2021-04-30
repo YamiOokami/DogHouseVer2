@@ -7,8 +7,21 @@
         <div class="col-lg-4">
             <input type="text" name="newslatterTitle" class="form-control form-control-sm" value="<%= news.title %>">
         </div>
-        <div class="col-lg-1.5">
-            <button type="submit" class="btn btn-success btn-sm" form="saveForm">Save</button>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-3">
+            <button type="submit" class="btn btn-success" form="saveForm">Save Changes</button>
+            </form>
+        </div>
+        <div class="col-lg-3">
+            <form action="/default" method="post">
+            <button type="submit" class="btn btn-danger">Restore to default values</button>
+            </form>
+        </div>
+        <div class="col-lg-3">
+            <form action="/lastmod" method="post">
+            <button type="submit" class="btn btn-warning">Restore to last modified data</button>
+            </form>
         </div>
     </div>
 </div>
@@ -21,8 +34,21 @@
             <div class="col-lg-4">
                 <input type="text" name="newslatterTitle" class="form-control form-control-sm" value="<%= news.title %>">
             </div>
-            <div class="col-lg-1.5">
-                <button type="submit" class="btn btn-success btn-sm" form="saveForm">שמור</button>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <button type="submit" class="btn btn-success" form="saveForm">שמור שינויים</button>
+                </form>
+            </div>
+            <div class="col-lg-3">
+                <form action="/default" method="post">
+                <button type="submit" class="btn btn-danger">חזור לערכים ברירת מחדל</button>
+                </form>
+            </div>
+            <div class="col-lg-3">
+                <form action="/lastmod" method="post">
+                <button type="submit" class="btn btn-warning">חזור לערכים האחרונים שנשמרו</button>
+                </form>
             </div>
         </div>
     </div>
