@@ -374,9 +374,9 @@ app.post("/lang", function(req ,res) {
 
 
 // newslatter function
-/* 
+
 app.post("/news", function (req, res) {
-  const fisrName = req.body.fName;
+  const firstName = req.body.fName;
   const lastName = req.body.lName;
   const email = req.body.email;
 
@@ -386,23 +386,21 @@ app.post("/news", function (req, res) {
         email_address: email,
         status: "subscribed",
         merge_fields: {
-          FNAME: fistName,
+          FNAME: firstName,
           LNAME: lastName
         }
       }
     ]
   };
 
-const jasonData = JASON.stringify(data);
+const jasonData = JSON.stringify(data);
 
-// needs url from mailchimp
-const url = "https://us7.api.mailchimp.com/3.0/lists/<list-id>"
+const url = "https://us1.api.mailchimp.com/3.0/lists/" + process.env.NEWS_ID;
 
 const options = {
   method: "POST",
 
-  // needs auth key from mailchimp
-  auth: "doghouseband7:<api-key>"
+  auth: "doghouseband7:" + process.env.NEWS_API
 }
 
 const request = https.request(url, options, function(response){
@@ -413,7 +411,7 @@ const request = https.request(url, options, function(response){
   }
 
   response.on("data", function(data){
-    console.log(JASON.parse(data));
+    console.log(JSON.parse(data));
   });
 
 });
@@ -421,7 +419,7 @@ const request = https.request(url, options, function(response){
   request.write(jasonData);
   request.end()
 
-}); */
+});
 
 
 // contact page rendering
