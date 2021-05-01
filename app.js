@@ -79,7 +79,7 @@ app.use(passport.session());
 
 
 //mongoose connection
-mongoose.connect("mongodb://localhost:27017/doghouseDB", {
+mongoose.connect("mongodb+srv://admin-sela:" +  process.env.DB_PASS + "@doghouse.25dj0.mongodb.net/doghouseDB?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -197,13 +197,13 @@ User.find({}, function (err, foundUsers) {
     User.insertMany([
       {
         "username" : process.env.ADMIN,
-        "salt" : proccess.env.ADMIN_SALT,
-        "hash" : proccess.env.ADMIN_HASH
+        "salt" : process.env.ADMIN_SALT,
+        "hash" : process.env.ADMIN_HASH
       },
       {
-        "username" : proccess.env.EPK,
-        "salt" : proccess.env.EPK_SALT,
-        "hash" : proccess.env.EPK_HASH
+        "username" : process.env.EPK,
+        "salt" : process.env.EPK_SALT,
+        "hash" : process.env.EPK_HASH
       }
     ]);
     console.log("Found no users in the DB and created the default ones.");
@@ -1599,6 +1599,12 @@ app.post("/logout", function (req, res) {
   res.redirect("/");
 });
 
-app.listen(3000, function () {
-  console.log("Server started successfully on port 3000.");
+
+let port = process.env.PORT;
+if (port == null || port == "") {
+  port = 3000;
+}
+
+app.listen(port, function () {
+  console.log("Server started successfully.");
 });

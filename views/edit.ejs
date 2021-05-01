@@ -9,6 +9,13 @@
             <% } else { %>   
                 <h1 class="edit-title">עריכת האתר</h1>
                 <% } %> 
+                <% if (!pageToEdit) { %> 
+                <% if (lang === "en") { %>
+                    <h4>Please choose a page to edit</h4>
+                    <% } else { %>
+                <h4>אנא בחר דף לערוך</h4>
+                <% } %>
+                <% } %> 
               <div class="row">
                 <div class="col-2">
                     <ul class="nav flex-column">
@@ -96,23 +103,38 @@
                 </div>
                 <div class="col-10">
                     <form action="/save" method="post" enctype="multipart/form-data" id="saveForm">
-                    <% if (pageToEdit === "edit-main") { %> 
-                        <%- include('partials/edit/edit-main') -%>
-                    <% } else if (pageToEdit === "edit-news") { %> 
-                     <%- include('partials/edit/edit-newslatter') -%>
-                     <% } else if (pageToEdit === "edit-music") { %> 
-                        <%- include('partials/edit/edit-ourmusic') -%>
-                    <% } else if (pageToEdit === "edit-shows") { %>     
-                        <%- include('partials/edit/edit-shows') -%>
-                    <% } else if (pageToEdit === "edit-about") { %> 
-                        <%- include('partials/edit/edit-about') -%>
-                    <% } else if (pageToEdit === "edit-success") { %> 
-                        <%- include('partials/edit/edit-success') -%>
-                    <% } else if (pageToEdit === "edit-fail") { %>              
-                        <%- include('partials/edit/edit-fail') -%>
-                    <% } else if (pageToEdit === "edit-epk") { %>              
-                        <%- include('partials/edit/edit-epk') -%>
-                    <% } %> 
+
+                        <% switch (pageToEdit) {  
+                             case "edit-main": %> 
+                            <%- include('partials/edit/edit-main') -%>
+                            <% break; %> 
+                            <% case "edit-news": %> 
+                            <%- include('partials/edit/edit-newslatter') -%>
+                            <% break; %> 
+                            <% case "edit-music": %> 
+                            <%- include('partials/edit/edit-ourmusic') -%>
+                            <% break; %> 
+                            <% case "edit-shows": %>
+                            <%- include('partials/edit/edit-shows') -%>
+                            <% break; %> 
+                            <% case "edit-about": %>
+                            <%- include('partials/edit/edit-about') -%>
+                            <% break; %>    
+                            <% case "edit-success": %>
+                            <%- include('partials/edit/edit-success') -%>
+                            <% break; %> 
+                            <% case "edit-fail": %>
+                            <%- include('partials/edit/edit-fail') -%>
+                            <% break; %> 
+                            <% case "edit-epk": %>
+                            <%- include('partials/edit/edit-epk') -%>
+                            <% break; %> 
+                            <% default: %> 
+                            <div class="row justify-content-center">
+                                <div class="col-lg-3">
+                         
+                        </div>
+                            <% } %>
                 </div>
               </div>
     </section>
