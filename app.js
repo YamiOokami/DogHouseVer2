@@ -40,10 +40,9 @@ let transport = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
   port: 587,
-  secure: false,
   auth: {
-    user: "doghouseband7@gmail.com",
-    pass: "Allwoodhomo7",
+    user: process.env.GMAIL_USER,
+    pass: process.env.GMAIL_PASS,
   },
 });
 
