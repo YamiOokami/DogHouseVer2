@@ -79,7 +79,7 @@ app.use(passport.session());
 
 
 //mongoose connection
-mongoose.connect("mongodb+srv://admin-sela:" +  process.env.DB_PASS + "@doghouse.25dj0.mongodb.net/doghouseDB?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://admin-sela:" +  process.env.DB_PASS + "@doghouse..xjyf9gm.mongodb.net/doghouseDB?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
