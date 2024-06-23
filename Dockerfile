@@ -1,6 +1,6 @@
-#bashCopy code
+bashCopy code
 # Use the official Node.js image as the base image
-FROM node:18
+FROM node:14
 
 # Set the working directory in the container
 WORKDIR /app
@@ -12,4 +12,4 @@ COPY . /app
 RUN npm install
 
 # Define the entry point for the container
-CMD ["npm", "start"]
+CMD ["npm", "test"]
